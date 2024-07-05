@@ -121,31 +121,31 @@ GestureDetector addToCartButtonTabletWidget(List<VariantData> variantDataList,
     ProgressLoader pl, GlobalKey<FormState> formKey, StateSetter setState) {
   return GestureDetector(
     onTap: () async {
-      if (formKey.currentState!.validate()) {
-        // for (var variantData in variantDataList) {
-        List<Map<String, dynamic>> lineItems =
-            variantDataList.map((variantData) {
-          return {
-            "quantity": variantData
-                .quantity, // Adjust to match your VariantData structure
-            "product_id": variantData
-                .productId, // Adjust to match your VariantData structure
-            "variant_id": variantData
-                .variantId, // Adjust to match your VariantData structure
-          };
-        }).toList();
-        if (SpUtil.getString(SpConstUtil.cartID) == "") {
-          await pl.show();
-          await apis.addToCartProductsApi(lineItems, pl, setState);
-          await pl.hide();
-        } else {
-          await pl.show();
+      if (variantDataList.isEmpty) {
+        await apis.showToast("please add atleast one product variant...");
+      } else {
+        if (formKey.currentState!.validate()) {
+          List<Map<String, dynamic>> lineItems =
+              variantDataList.map((variantData) {
+            return {
+              "quantity": variantData.quantity,
+              "product_id": variantData.productId,
+              "variant_id": variantData.variantId,
+            };
+          }).toList();
 
-          await apis.addToCartNewApi(
-              lineItems, SpUtil.getString(SpConstUtil.cartID)!, pl, setState);
-          await pl.hide();
+          if (SpUtil.getString(SpConstUtil.cartID) == "") {
+            await pl.show();
+            await apis.addToCartProductsApi(lineItems, pl, setState);
+            await pl.hide();
+          } else {
+            await pl.show();
+
+            await apis.addToCartNewApi(
+                lineItems, SpUtil.getString(SpConstUtil.cartID)!, pl, setState);
+            await pl.hide();
+          }
         }
-        // }
       }
     },
     child: Padding(

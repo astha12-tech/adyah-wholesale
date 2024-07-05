@@ -50,8 +50,8 @@ class _OrderPlacedSuccessScreenState extends State<OrderPlacedSuccessScreen> {
       children: [
         Center(
           child: Container(
-            height: 250,
-            width: 250,
+            height: 30.h,
+            width: 30.h,
             decoration: BoxDecoration(
                 color: Colors.green.withOpacity(0.2), shape: BoxShape.circle),
             child: Padding(
@@ -64,45 +64,46 @@ class _OrderPlacedSuccessScreenState extends State<OrderPlacedSuccessScreen> {
             ),
           ),
         ),
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 3.h,
         ),
         text("Thank you ${widget.firstName}!",
             fontSize: 18.sp, fontWeight: FontWeight.bold),
-        const SizedBox(
-          height: 10,
+        SizedBox(
+          height: 3.h,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            text("Your order number is "),
-            text("${widget.orderID}", fontWeight: FontWeight.bold),
+            text("Your order number is ", fontSize: 10.sp),
+            text("${widget.orderID}",
+                fontWeight: FontWeight.bold, fontSize: 10.sp),
           ],
         ),
-        const SizedBox(
-          height: 20,
+        SizedBox(
+          height: 3.h,
         ),
-        const Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
+        Padding(
+          padding: EdgeInsets.only(left: 2.h, right: 2.h),
           child: Text(
             "Your order was sent to us but is currently awaiting payment. Once we receive the payment for your order, it will be completed. If you've already provided payment details then we will process your order manually and send you an email when it's completed.",
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: "OpenSans", fontSize: 12),
+            style: TextStyle(fontFamily: "OpenSans", fontSize: 8.sp),
           ),
         ),
-        const SizedBox(
-          height: 20,
+        SizedBox(
+          height: 3.h,
         ),
-        const Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
+        Padding(
+          padding: EdgeInsets.only(left: 2.h, right: 2.h),
           child: Text(
             "Please contact your sales rep to arrange and confirm the payment total so we can process your order without any delays.",
             textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: "OpenSans", fontSize: 12),
+            style: TextStyle(fontFamily: "OpenSans", fontSize: 8.sp),
           ),
         ),
-        const SizedBox(
-          height: 20,
+        SizedBox(
+          height: 4.h,
         ),
         GestureDetector(
           onTap: () async {
@@ -121,7 +122,7 @@ class _OrderPlacedSuccessScreenState extends State<OrderPlacedSuccessScreen> {
                 border: Border.all(color: colors.greyColor)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: text("CONTINUE SHOPPING »"),
+              child: text("CONTINUE SHOPPING »", fontSize: 8.sp),
             ),
           ),
         )

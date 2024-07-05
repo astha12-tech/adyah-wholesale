@@ -30,7 +30,7 @@ AppBar productDetailAppbar(
           // border: Border.all(
           //   color: SpUtil.getBool(SpConstUtil.appTheme)!
           //       ? colors.whitecolor
-          //       : colors.blackcolor, 
+          //       : colors.blackcolor,
           // ),
           color: colors.kSecondaryColor.withOpacity(0.2),
         ),
@@ -124,7 +124,7 @@ AppBar productDetailAppbar(
               )
             : badges.Badge(
                 position: badges.BadgePosition.topEnd(
-                  top: -7,
+                  top: -16,
                   end: -5,
                 ),
                 badgeAnimation: const badges.BadgeAnimation.rotation(
@@ -137,7 +137,7 @@ AppBar productDetailAppbar(
                 badgeContent: text(
                     "${SpUtil.getDouble(SpConstUtil.totalqty)!.toInt()}",
                     color: colors.whitecolor,
-                    fontSize: 8),
+                    fontSize: 22),
                 child: Image.asset(
                   "assets/png/grocery-store.png",
                   color: SpUtil.getBool(SpConstUtil.appTheme)!

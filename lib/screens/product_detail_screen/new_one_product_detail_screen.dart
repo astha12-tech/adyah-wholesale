@@ -91,6 +91,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
+    print("==== ProductDetail ====");
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
     // debugPrint(
     //     "=== SpUtil.getDouble(SpConstUtil.totalqty === ${SpUtil.getDouble(SpConstUtil.totalqty)}");
