@@ -10,7 +10,7 @@ import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/model/get_wish_list_model.dart';
-import 'package:adyah_wholesale/screens/product_detail_screen/new_one_product_detail_screen.dart';
+import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/products_shimmer.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
@@ -87,7 +87,7 @@ class _ProductsState extends State<Products> {
         //       child: Padding(
         //         padding: EdgeInsets.all(0.7.h),
         //         child: Image.asset(
-        //           "assets/png/back.png",
+        //           "assets/png/left.png",
         //           color: SpUtil.getBool(SpConstUtil.appTheme)!
         //               ? colors.whitecolor
         //               : colors.blackcolor,
@@ -135,9 +135,9 @@ class _ProductsState extends State<Products> {
                       color: colors.kSecondaryColor.withOpacity(0.2),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(0.99.h),
+                      padding: EdgeInsets.all(0.45.h),
                       child: Image.asset(
-                        "assets/png/back.png",
+                        "assets/png/left.png",
                         color: SpUtil.getBool(SpConstUtil.appTheme)!
                             ? colors.whitecolor
                             : colors.blackcolor,

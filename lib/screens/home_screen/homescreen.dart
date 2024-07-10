@@ -17,7 +17,7 @@ import 'package:adyah_wholesale/screens/home_screen/featured_products_widget.dar
 import 'package:adyah_wholesale/screens/home_screen/home_app_bar.dart';
 import 'package:adyah_wholesale/screens/home_screen/home_banner.dart';
 import 'package:adyah_wholesale/screens/home_screen/latest_products_widget.dart';
-import 'package:adyah_wholesale/screens/product_detail_screen/new_one_product_detail_screen.dart';
+import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';

@@ -44,7 +44,7 @@ class _FlutterBlogDetailScreenState extends State<FlutterBlogDetailScreen> {
                       color: colors.whitecolor.withOpacity(0.7)),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Image.asset("assets/png/back.png"),
+                    child: Image.asset("assets/png/left.png"),
                   )),
             ),
             GestureDetector(

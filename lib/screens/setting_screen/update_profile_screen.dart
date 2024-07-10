@@ -95,9 +95,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                       : colors.blackcolor),
             ),
             child: Padding(
-              padding: EdgeInsets.all(0.7.h),
+              padding: EdgeInsets.all(0.45.h),
               child: Image.asset(
-                "assets/png/back.png",
+                "assets/png/left.png",
                 color: SpUtil.getBool(SpConstUtil.appTheme)!
                     ? colors.whitecolor
                     : colors.blackcolor,
@@ -137,7 +137,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           validateEmail = false;
                           return "You must enter a valid email.";
                         } else if (!emailRegExp.hasMatch(val)) {
-                          return 'Enter a valid email address';
+                          return "Enter a valid email address";
                         } else {
                           validateEmail = true;
                         }

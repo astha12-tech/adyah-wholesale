@@ -45,7 +45,7 @@ class _CartScreennState extends State<CartScreenn> {
         snapshot.data!.data!.lineItems!.physicalItems != null) {
       for (var item in snapshot.data!.data!.lineItems!.physicalItems!) {
         totalQuantity += item.quantity!;
-        debugPrint("=== totalQuantity ===>$totalQuantity");
+        // debugPrint("=== totalQuantity ===>$totalQuantity");
       }
       await SpUtil.putDouble(SpConstUtil.totalqty, totalQuantity);
     }
@@ -82,17 +82,12 @@ class _CartScreennState extends State<CartScreenn> {
                           width: 4.2.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            // border: Border.all(
-                            //   color: SpUtil.getBool(SpConstUtil.appTheme)!
-                            //       ? colors.whitecolor
-                            //       : colors.blackcolor,
-                            // ),
                             color: colors.kSecondaryColor.withOpacity(0.2),
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(0.99.h),
+                            padding: EdgeInsets.all(0.45.h),
                             child: Image.asset(
-                              "assets/png/back.png",
+                              "assets/png/left.png",
                               color: SpUtil.getBool(SpConstUtil.appTheme)!
                                   ? colors.whitecolor
                                   : colors.blackcolor,
@@ -100,7 +95,6 @@ class _CartScreennState extends State<CartScreenn> {
                           ),
                         ),
                       ),
-
                       text(
                         "My Cart",
                         fontSize: 13.sp,
@@ -109,9 +103,6 @@ class _CartScreennState extends State<CartScreenn> {
                             ? colors.whitecolor
                             : colors.blackcolor,
                       ),
-
-                      // ),
-                      // )
                     ],
                   ),
                 )
@@ -129,13 +120,6 @@ class _CartScreennState extends State<CartScreenn> {
                     ),
                   ],
                 ),
-          // widget.allcartDataids == ""
-          //     ? Expanded(
-          //         child: Center(
-          //           child: text("Empty Cart"),
-          //         ),
-          //       )
-          //     :
           Expanded(
             child: StreamBuilder<CartDataModel>(
                 stream: cartDataBloc.cartDataStream,
@@ -201,14 +185,7 @@ class _CartScreennState extends State<CartScreenn> {
                                   itemCount: snapshot.data!.data!.lineItems!
                                       .physicalItems!.length,
                                   itemBuilder: (context, index) {
-                                    // debugPrint(
-                                    //     "===  qtys ===>>${snapshot.data!.data!.lineItems!.physicalItems![index].quantity}");
-
-                                    // totalQuantity += snapshot.data!.data!.lineItems!
-                                    //     .physicalItems![index].quantity!;
-                                    // debugPrint("=== totalQuantity ===>$totalQuantity");
                                     calculateTotalQuantity(snapshot);
-
                                     return GestureDetector(
                                       onTap: () {},
                                       child: Padding(
@@ -357,20 +334,6 @@ class _CartScreennState extends State<CartScreenn> {
                                                                               .ellipsis),
                                                                 ),
                                                               ),
-                                                              // text(
-                                                              //     snapshot
-                                                              //         .data!
-                                                              //         .data!
-                                                              //         .lineItems!
-                                                              //         .physicalItems![
-                                                              //             index]
-                                                              //         .options![0]
-                                                              //         .value!,
-                                                              //     fontSize: MediaQuery.of(
-                                                              //                 context)
-                                                              //             .size
-                                                              //             .height /
-                                                              //         70),
                                                             ],
                                                           ),
                                                     snapshot
@@ -428,21 +391,6 @@ class _CartScreennState extends State<CartScreenn> {
                                                                               .ellipsis),
                                                                 ),
                                                               ),
-                                                              // text(
-                                                              //     snapshot
-                                                              //         .data!
-                                                              //         .data!
-                                                              //         .lineItems!
-                                                              //         .physicalItems![
-                                                              //             index]
-                                                              //         .options![
-                                                              //             1]
-                                                              //         .value!,
-                                                              //     fontSize: MediaQuery.of(
-                                                              //                 context)
-                                                              //             .size
-                                                              //             .height /
-                                                              //         70),
                                                             ],
                                                           ),
                                                     const SizedBox(
@@ -655,14 +603,8 @@ class _CartScreennState extends State<CartScreenn> {
                                                   width: 3.h,
                                                   decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
-                                                      color:
-                                                          colors.themebluecolor
-                                                      // border: Border.all(
-                                                      //     color: colors.blackcolor
-                                                      //         .withOpacity(0.5)
-
-                                                      //         )
-                                                      ),
+                                                      color: colors
+                                                          .themebluecolor),
                                                   child: Padding(
                                                     padding:
                                                         EdgeInsets.all(0.3.h),
@@ -827,9 +769,9 @@ class _CartScreennState extends State<CartScreenn> {
                   //         : colors.blackcolor),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(0.7.h),
+                  padding: EdgeInsets.all(0.45.h),
                   child: Image.asset(
-                    "assets/png/back.png",
+                    "assets/png/left.png",
                     color: SpUtil.getBool(SpConstUtil.appTheme)!
                         ? colors.whitecolor
                         : colors.blackcolor,

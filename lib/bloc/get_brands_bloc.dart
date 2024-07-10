@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:adyah_wholesale/api/api.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/model/get_all_brands_model.dart';
-import 'package:adyah_wholesale/model/get_customer_model.dart';
 
 class GetBrandBloc {
   StreamController<GetAllBrandsModel> getbrandstreamController =

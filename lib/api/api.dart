@@ -9,6 +9,7 @@ import 'package:adyah_wholesale/bloc/get_blog_bloc.dart';
 import 'package:adyah_wholesale/bloc/get_brands_bloc.dart';
 import 'package:adyah_wholesale/bloc/get_customer_bloc.dart';
 import 'package:adyah_wholesale/bloc/get_my_orders_bloc.dart';
+import 'package:adyah_wholesale/bloc/get_order_products_bloc.dart';
 import 'package:adyah_wholesale/bloc/get_wish_list_bloc.dart';
 import 'package:adyah_wholesale/bloc/home_banner_bloc.dart';
 import 'package:adyah_wholesale/bloc/parent_category_bloc.dart';
@@ -28,6 +29,7 @@ import 'package:adyah_wholesale/model/get_blog_model.dart';
 import 'package:adyah_wholesale/model/get_customer_model.dart';
 import 'package:adyah_wholesale/model/get_my_order_details_model.dart';
 import 'package:adyah_wholesale/model/get_my_orders_model.dart';
+import 'package:adyah_wholesale/model/get_order_product_model.dart';
 import 'package:adyah_wholesale/model/get_wish_list_model.dart';
 import 'package:adyah_wholesale/model/home_banner_model.dart';
 import 'package:adyah_wholesale/model/latest_product_model.dart';
@@ -906,9 +908,9 @@ class Apis {
 
         http.Response response =
             await http.Response.fromStream(await request.send());
-        debugPrint("==== response.body ======***${response.body}");
+        debugPrint("***====== response.body ======***${response.body}");
         debugPrint(
-            "==== response.statusCode ======***${response.statusCode}\n");
+            "***====== response.statusCode ======***${response.statusCode}\n");
         if (response.statusCode == 200) {
           await pl.hide();
           return GetAllBrandsModel.fromJson(jsonDecode(response.body));
@@ -934,6 +936,7 @@ class Apis {
       getBrandBloc.getbrandstreamController.sink
           .addError(commonData.noInternet);
     }
+    return null;
   }
 
   Future<ProductsMainCategoryModel?> productsMainCategoryApi(categoryID,
@@ -1020,7 +1023,7 @@ class Apis {
       await showToast(jsonDecode(response.body)['title']);
     } else if (response.statusCode == 422) {
       await pl.hide();
-      await showToast(jsonDecode(response.body)['title']);
+      await showToast(jsonDecode(response.body)['errors']['variant']);
     } else {
       await pl.hide();
 
@@ -1320,8 +1323,13 @@ class Apis {
     }
   }
 
-  getPaymetMethodApi(ProgressLoader pl, BuildContext context,
-      void Function() toggleTheme, orderID, cartID) async {
+  getPaymetMethodApi(
+    ProgressLoader pl,
+    BuildContext context,
+    void Function() toggleTheme,
+    orderID,
+    cartID,
+  ) async {
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -1331,7 +1339,7 @@ class Apis {
           'Content-Type': 'application/json',
         };
         var request = http.Request('GET',
-            Uri.parse('${urls.v3baseUrl}payments/methods?order_id=$orderID'));
+            Uri.parse('${urls.v3baseUrl}payments/methods?checkout_id=$cartID'));
         request.headers.addAll(headers);
 
         http.Response response =
@@ -1369,7 +1377,7 @@ class Apis {
   }
 
   ordercheckoutApi(ProgressLoader pl, BuildContext context, String cartID,
-      void Function() toggleTheme) async {
+      void Function() toggleTheme, StateSetter setState) async {
     debugPrint("***====== ordercheckoutApi ======*** ");
 
     bool internet = await checkInternet();
@@ -1397,8 +1405,15 @@ class Apis {
 
           await SpUtil.putInt(
               SpConstUtil.orderID, jsonDecode(response.body)['data']['id']);
-          await getPaymetMethodApi(pl, context, toggleTheme,
-              SpUtil.getInt(SpConstUtil.orderID), cartID);
+          await apis.ordercheckoutUpdateApi(
+              pl, context, cartID, toggleTheme, setState);
+          // await getPaymetMethodApi(
+          //     pl,
+          //     context,
+          //     toggleTheme,
+          //     SpUtil.getInt(SpConstUtil.orderID),
+          //     cartID,
+          //  );
         } else if (response.statusCode == 422) {
           await pl.hide();
           await showToast(jsonDecode(response.body)['title']);
@@ -1430,7 +1445,11 @@ class Apis {
             'PUT',
             Uri.parse(
                 '${urls.v2baseUrl}orders/${SpUtil.getInt(SpConstUtil.orderID)}'));
-        request.body = json.encode({"status_id": 7});
+        request.body = json.encode({
+          "status_id": 7,
+          "payment_method": "cod",
+          "customer_id": '${SpUtil.getInt(SpConstUtil.customerID)}'
+        });
         request.headers.addAll(headers);
 
         http.Response response =
@@ -1501,7 +1520,7 @@ class Apis {
         var request =
             http.Request('POST', Uri.parse('${urls.v2baseUrl}${urls.orders}'));
         Map<String, dynamic> requestBody = {
-          "status_id": 0,
+          "status_id": 7,
           "customer_id": SpUtil.getInt(SpConstUtil.customerID),
           "billing_address": {
             "first_name": firstName,
@@ -1514,6 +1533,19 @@ class Apis {
             "country_iso2": countrycode,
             "email": email
           },
+          "shipping_addresses": [
+            {
+              "first_name": firstName,
+              "last_name": lastName,
+              "street_1": street1,
+              "city": city,
+              "state": state,
+              "zip": zip,
+              "country": country,
+              "country_iso2": countrycode,
+              "email": email
+            }
+          ],
           "products": lineItems
         };
         request.body = json.encode(requestBody);
@@ -2569,12 +2601,12 @@ class Apis {
     if (internet) {
       try {
         var headers = {
-          'authToken': '${SpUtil.getString(SpConstUtil.authTokenV2)}'
+          'authToken': '${SpUtil.getString(SpConstUtil.authTokenV3)}'
         };
         var request = http.Request(
             'GET',
             Uri.parse(
-                'https://api-b2b.bigcommerce.com/api/v2/io/companies/4079190/orders?orderBy=bcOrderId&sortBy=DESC&isShowMy=0'));
+                'https://api-b2b.bigcommerce.com/api/v3/io/orders?companyId=${SpUtil.getString(SpConstUtil.companyID)}&orderBy=DESC&offset=0&showExtra=0'));
 
         debugPrint("***====== getMyOrdersApi request ======*** $request");
         request.headers.addAll(headers);
@@ -2606,7 +2638,7 @@ class Apis {
   }
 
   Future<GetMyOrdersDetailsModel?> getMyOrderDetailsApi(
-      ProgressLoader pl, int orderID) async {
+      ProgressLoader pl, var orderID) async {
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -2642,6 +2674,48 @@ class Apis {
       await pl.hide();
 
       getAllOrdersBloc.getAllOrderstreamController.sink
+          .addError(commonData.noInternet);
+    }
+    return null;
+  }
+
+  Future<GeOrderProductsModel?> getOrderProductApi(
+      ProgressLoader pl, var orderID) async {
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {
+          'authToken': '${SpUtil.getString(SpConstUtil.authTokenV3)}'
+        };
+        var request = http.Request(
+            'GET',
+            Uri.parse(
+                'https://api-b2b.bigcommerce.com/api/v3/io/orders/$orderID/products'));
+
+        debugPrint("***====== getOrderProductApi request ======*** $request");
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+
+        debugPrint(
+            "***====== getOrderProductApi response ======*** ${response.body}\n");
+
+        if (response.statusCode == 200) {
+          return GeOrderProductsModel.fromJson(jsonDecode(response.body));
+        } else {
+          debugPrint(response.reasonPhrase);
+        }
+      } catch (e) {
+        await pl.hide();
+
+        getOrdersProductsBloc.getOrdersProductstreamController.sink
+            .addError(commonData.error);
+      }
+    } else {
+      await pl.hide();
+
+      getOrdersProductsBloc.getOrdersProductstreamController.sink
           .addError(commonData.noInternet);
     }
     return null;

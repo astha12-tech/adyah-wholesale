@@ -10,7 +10,7 @@ class GetAllOrderDetailBloc {
   Stream<GetMyOrdersDetailsModel> get getAllorderDetailcategoryStream =>
       getAllOrderDetailstreamController.stream;
   GetMyOrdersDetailsModel? getMyOrdersDetailsModel;
-  getAllrderDeatilsBloc(ProgressLoader pl, int orderID) async {
+  getAllrderDeatilsBloc(ProgressLoader pl, var orderID) async {
     getMyOrdersDetailsModel = await apis.getMyOrderDetailsApi(pl, orderID);
     getAllOrderDetailstreamController.sink.add(getMyOrdersDetailsModel!);
   }

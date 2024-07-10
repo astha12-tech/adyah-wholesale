@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
+import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/add_cart_button_widget.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';
@@ -65,9 +66,7 @@ Widget quantityTableWidget(
                           borderRadius: BorderRadius.circular(5),
                         )),
                   ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
+                  sizedboxWidget(),
                   addToCartButtonWidgetNew(
                       data.variants[0].productId,
                       controller.text.isEmpty ? 0 : int.parse(controller.text),
@@ -115,16 +114,9 @@ Widget quantityTableWidget(
               padding: const EdgeInsets.only(left: 8, right: 8),
               child: DataTable(
                 dataRowMaxHeight: double.infinity,
-                // dataRowHeight: 95,
                 headingRowColor:
                     const WidgetStatePropertyAll(Colors.transparent),
                 dataRowColor: const WidgetStatePropertyAll(Colors.transparent),
-                // border: TableBorder(
-                //     left: BorderSide(color: colors.themebluecolor),
-                //     right: BorderSide(color: colors.themebluecolor),
-                //     top: BorderSide(color: colors.themebluecolor),
-                //     bottom: BorderSide(color: colors.themebluecolor)),
-
                 columns: [
                   DataColumn(
                       label: SizedBox(
@@ -181,16 +173,13 @@ Widget quantityTableWidget(
                                 sizeLabel: sizeLabel,
                                 colorLabel: colorLabel,
                                 data: data,
-                                productId: data.id!, // Pass the product ID
+                                productId: data.id!,
                                 onVariantSelected:
                                     (variantId, productId, quantity) {
                                   setState(() {
-                                    // Check if a variantData object with the same productId and variantId exists
                                     if (quantity == 0) {
-                                      // Clear the variantDataList when quantity is 0
                                       variantDataList.clear();
                                     } else {
-                                      // Check if a variantData object with the same productId and variantId exists
                                       var existingIndex =
                                           variantDataList.indexWhere((data) =>
                                               data.productId == productId &&

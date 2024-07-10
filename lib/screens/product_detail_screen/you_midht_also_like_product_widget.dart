@@ -1,6 +1,6 @@
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
-import 'package:adyah_wholesale/screens/product_detail_screen/new_one_product_detail_screen.dart';
+import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';

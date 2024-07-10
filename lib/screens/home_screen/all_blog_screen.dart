@@ -44,8 +44,8 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
                       : colors.blackcolor),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(9.0),
-              child: Image.asset("assets/png/back.png",
+              padding: EdgeInsets.all(0.45.h),
+              child: Image.asset("assets/png/left.png",
                   color: SpUtil.getBool(SpConstUtil.appTheme)!
                       ? colors.whitecolor
                       : colors.blackcolor),

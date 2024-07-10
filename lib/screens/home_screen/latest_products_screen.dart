@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, must_be_immutable
+// ignore_for_file: must_be_immutable
 
 import 'package:adyah_wholesale/bloc/latest_product_bloc.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
@@ -8,7 +8,7 @@ import 'package:adyah_wholesale/components/text_component/text.dart';
 
 import 'package:adyah_wholesale/model/latest_product_model.dart'
     as productsmaincategorymodel;
-import 'package:adyah_wholesale/screens/product_detail_screen/new_one_product_detail_screen.dart';
+import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/products_shimmer.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
@@ -55,7 +55,7 @@ class _FeaturedProductsScreenState extends State<LatestProductsScreen> {
         //       ),
         //       child: Padding(
         //         padding: EdgeInsets.all(0.7.h),
-        //         child: Image.asset("assets/png/back.png",
+        //         child: Image.asset("assets/png/left.png",
         //             color: SpUtil.getBool(SpConstUtil.appTheme)!
         //                 ? colors.whitecolor
         //                 : colors.blackcolor),
@@ -99,9 +99,9 @@ class _FeaturedProductsScreenState extends State<LatestProductsScreen> {
                       color: colors.kSecondaryColor.withOpacity(0.2),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(0.99.h),
+                      padding: EdgeInsets.all(0.45.h),
                       child: Image.asset(
-                        "assets/png/back.png",
+                        "assets/png/left.png",
                         color: SpUtil.getBool(SpConstUtil.appTheme)!
                             ? colors.whitecolor
                             : colors.blackcolor,
@@ -124,8 +124,6 @@ class _FeaturedProductsScreenState extends State<LatestProductsScreen> {
               ],
             ),
           ),
-      
-      
           Expanded(
             child: StreamBuilder<productsmaincategorymodel.LatestProductModel>(
                 stream: latestProductBloc.latestproductStream,

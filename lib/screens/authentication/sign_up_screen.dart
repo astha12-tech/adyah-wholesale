@@ -99,7 +99,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               sizedboxWidget(),
               commonTextformField("Email Address", emailController, (val) {
                 final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
                 if (val!.isEmpty) {
                   validateEmail = false;
                   return "You must enter a valid email.";
@@ -233,9 +232,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                 }
               }, "Create Account"),
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
               authenticationTextSpan(
                   context, "Already have an account?", "Login", () {
                 Navigator.of(context).pushAndRemoveUntil(

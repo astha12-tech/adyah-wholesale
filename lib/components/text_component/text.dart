@@ -6,12 +6,9 @@ Text text(
   FontWeight? fontWeight,
   Color? color,
 }) =>
-    Text(
-      text,
-      style: TextStyle(
-        fontFamily: "OpenSans",
-        fontSize: fontSize ?? 14,
-        fontWeight: fontWeight ?? FontWeight.normal,
-        color: color,
-      ),
-    );
+    Text(text,
+        style: TextStyle(
+            fontFamily: "OpenSans",
+            fontSize: fontSize ?? 14,
+            fontWeight: fontWeight ?? FontWeight.normal,
+            color: color));

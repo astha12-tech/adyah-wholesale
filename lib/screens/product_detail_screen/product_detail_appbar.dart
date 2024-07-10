@@ -35,9 +35,9 @@ AppBar productDetailAppbar(
           color: colors.kSecondaryColor.withOpacity(0.2),
         ),
         child: Padding(
-          padding: EdgeInsets.all(0.7.h),
+          padding: EdgeInsets.all(0.45.h),
           child: Image.asset(
-            "assets/png/back.png",
+            "assets/png/left.png",
             color: SpUtil.getBool(SpConstUtil.appTheme)!
                 ? colors.whitecolor
                 : colors.blackcolor,

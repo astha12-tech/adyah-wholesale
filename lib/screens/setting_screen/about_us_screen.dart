@@ -125,9 +125,9 @@ Page resource error:
                         : colors.blackcolor),
               ),
               child: Padding(
-                padding: EdgeInsets.all(0.7.h),
+                padding: EdgeInsets.all(0.45.h),
                 child: Image.asset(
-                  "assets/png/back.png",
+                  "assets/png/left.png",
                   color: SpUtil.getBool(SpConstUtil.appTheme)!
                       ? colors.whitecolor
                       : colors.blackcolor,
@@ -138,6 +138,7 @@ Page resource error:
           scrolledUnderElevation: 0,
 
           automaticallyImplyLeading: false,
+
           centerTitle: true,
           // backgroundColor:
           //     SpUtil.getBool(SpConstUtil.appTheme)! ? colors.whitecolor : colors.themebluecolor,

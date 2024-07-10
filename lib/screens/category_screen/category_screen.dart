@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, must_be_immutable
+// ignore_for_file: must_be_immutable
 
 import 'package:adyah_wholesale/bloc/category_bloc.dart';
 import 'package:adyah_wholesale/components/appbar/appbar_widget.dart';

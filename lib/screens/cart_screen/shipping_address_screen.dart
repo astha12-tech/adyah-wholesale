@@ -1,8 +1,9 @@
-// ignore_for_file: must_be_immutable, avoid_print, unused_element, use_build_context_synchronously
+// ignore_for_file: must_be_immutable, unused_element, use_build_context_synchronously
 
 import 'package:adyah_wholesale/api/api.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
+import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/model/billing_checkout_model.dart';
 import 'package:adyah_wholesale/model/checkout_consignments_update_model.dart';
@@ -132,8 +133,8 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                         : colors.blackcolor),
               ),
               child: Padding(
-                padding: EdgeInsets.all(0.7.h),
-                child: Image.asset("assets/png/back.png",
+                padding: EdgeInsets.all(0.45.h),
+                child: Image.asset("assets/png/left.png",
                     color: SpUtil.getBool(SpConstUtil.appTheme)!
                         ? colors.whitecolor
                         : colors.blackcolor),
@@ -160,11 +161,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
         physics: const BouncingScrollPhysics(),
         child: Padding(
           padding: EdgeInsets.all(1.0.h),
-          child:
-              //  Form(
-              //   key: _formKey,
-              //   child:
-              Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -312,14 +309,13 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                 ),
               ),
 
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
+
               text("Shipping Method",
                   fontSize: 12.sp, fontWeight: FontWeight.bold),
-              SizedBox(
-                height: 2.h,
-              ),
+
+              sizedboxWidget(),
+
               widget.checkoutModel.data!.consignments!.isNotEmpty
                   ? Column(
                       children: [
@@ -424,9 +420,8 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
               //   },
               // ),
 
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
+
               TextButton(
                 onPressed: () async {
                   BillingCheckoutModel? billingCheckoutModel;
@@ -461,11 +456,18 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                       context,
                       widget.toggleTheme);
                   if (billingCheckoutModel != null) {
-                    await apis.ordercheckoutApi(
+                    // await apis.ordercheckoutApi(
+                    //   pl,
+                    //   context,
+                    //   widget.checkoutModel.data!.id!,
+                    //   widget.toggleTheme,
+                    // );
+                    await apis.getPaymetMethodApi(
                       pl,
                       context,
-                      widget.checkoutModel.data!.id!,
                       widget.toggleTheme,
+                      SpUtil.getInt(SpConstUtil.orderID),
+                      widget.checkoutModel.data!.id!,
                     );
                   }
 
@@ -709,12 +711,12 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   //                     ),
 
   //                     SizedBox(
-  //                       height: 2.h,
+  //                        sizedboxWidget(),
   //                     ),
   //                     text("Shipping Method",
   //                         fontSize: 12.sp, fontWeight: FontWeight.bold),
   //                     SizedBox(
-  //                       height: 2.h,
+  //                        sizedboxWidget(),
   //                     ),
   //                     widget.checkoutModel.data!.consignments!.isNotEmpty
   //                         ? Column(
@@ -824,7 +826,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   //                     // ),
 
   //                     SizedBox(
-  //                       height: 2.h,
+  //                        sizedboxWidget(),
   //                     ),
   //                     TextButton(
   //                       onPressed: () async {

@@ -4,7 +4,7 @@ import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/screens/home_screen/latest_products_screen.dart';
-import 'package:adyah_wholesale/screens/product_detail_screen/new_one_product_detail_screen.dart';
+import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/home_screen_shimmer.dart';
 import 'package:adyah_wholesale/utils/colors.dart';

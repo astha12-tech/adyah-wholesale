@@ -35,7 +35,6 @@ class _MyAppState extends State<MyApp> {
         var clientId = data["client_id"];
         var authTokenV3 = data["auth_token_v3_live"];
         var authTokenV2 = data["auth_token_v2_live"];
-        // debugPrint("==== authTokenV3 ====>>$authTokenV3");
         debugPrint("***====== storeHashValue ======*** $storeHashValue\n");
         debugPrint("***====== clientSecret ======*** $clientSecret\n");
         debugPrint("***====== clientId ======*** $clientId\n");
@@ -65,7 +64,6 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _isDarkMode = !_isDarkMode;
       SpUtil.putBool(SpConstUtil.appTheme, _isDarkMode);
-      // debugPrint("====_isDarkMode =====> _toggleTheme ===>$_isDarkMode");
     });
   }
 

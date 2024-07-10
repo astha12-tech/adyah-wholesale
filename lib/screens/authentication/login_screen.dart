@@ -6,6 +6,7 @@ import 'package:adyah_wholesale/components/button/common_button.dart';
 import 'package:adyah_wholesale/components/common_text_field/common_text_field.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
+import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/screens/authentication/sign_up_screen.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
@@ -68,12 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
               Center(
                 child: text("Sign in", fontSize: 15.sp),
               ),
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
               commonTextformField("Email Address", emailController, (val) {
                 final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
                 if (val!.isEmpty) {
                   validateEmail = false;
                   return "You must enter a valid email.";
@@ -84,9 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 }
                 return null;
               }, validateEmail, TextInputType.emailAddress, false),
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
               commonTextformField("Password", passwordController, (val) {
                 validatePassword = false;
                 if (val!.isEmpty) {
@@ -112,9 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   await pl.hide();
                 }
               }, "Sign in"),
-              SizedBox(
-                height: 2.h,
-              ),
+              sizedboxWidget(),
               authenticationTextSpan(
                   context, "Don't have an account?", "Sign Up", () {
                 Navigator.push(

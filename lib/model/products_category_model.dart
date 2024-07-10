@@ -49,7 +49,7 @@ class Datum {
   int? height;
   double? price;
   int? costPrice;
-  int? retailPrice;
+  var retailPrice;
   var salePrice;
   int? mapPrice;
   int? taxClassId;
@@ -548,7 +548,7 @@ class Variant {
   double? price;
   double? calculatedPrice;
   dynamic salePrice;
-  int? retailPrice;
+  var retailPrice;
   dynamic mapPrice;
   int? weight;
   int? calculatedWeight;

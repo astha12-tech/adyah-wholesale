@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, avoid_print, use_build_context_synchronously, prefer_typing_uninitialized_variables
+// ignore_for_file: must_be_immutable, use_build_context_synchronously, prefer_typing_uninitialized_variables
 
 import 'package:adyah_wholesale/api/api.dart';
 import 'package:adyah_wholesale/card/card_date_validator.dart';
@@ -17,14 +17,12 @@ class PaymentScreen extends StatefulWidget {
   var data;
   var cartID;
 
-  PaymentScreen(
-      {super.key,
-      required this.toggleTheme,
-      required this.data,
-      required this.cartID
-
-      // required this.id
-      });
+  PaymentScreen({
+    super.key,
+    required this.toggleTheme,
+    required this.data,
+    required this.cartID,
+  });
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -46,7 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
-    print("==== widget data ====> ${widget.data}");
+    debugPrint("==== widget data ====> ${widget.data}");
 
     return Scaffold(
         appBar: AppBar(
@@ -65,8 +63,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         : colors.blackcolor),
               ),
               child: Padding(
-                padding: EdgeInsets.all(0.7.h),
-                child: Image.asset("assets/png/back.png",
+                padding: EdgeInsets.all(0.45.h),
+                child: Image.asset("assets/png/left.png",
                     color: SpUtil.getBool(SpConstUtil.appTheme)!
                         ? colors.whitecolor
                         : colors.blackcolor),
@@ -132,9 +130,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
             onTap: () async {
               if (selectedInstrument == "COD") {
                 await pl.show();
-                await apis.ordercheckoutUpdateApi(
+                await apis.ordercheckoutApi(
                     pl, context, widget.cartID, widget.toggleTheme, setState);
-
+                // await apis.ordercheckoutUpdateApi(
+                //     pl, context, widget.cartID, widget.toggleTheme, setState);
+                // await apis.createAnOrderApi(
+                //   widget.cartID,
+                //   widget.firstName,
+                //   widget.lastName,
+                //   widget.street1,
+                //   widget.city,
+                //   widget.state,
+                //   widget.zip,
+                //   widget.country,
+                //   widget.countrycode,
+                //   widget.email,
+                //   widget.lineItems,
+                //   pl,
+                //   context,
+                //   widget.toggleTheme,
+                // );
                 await pl.hide();
               }
             },
@@ -255,15 +270,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     TextFormField(
                       onChanged: (value) {
-                        print("== value ==>$value");
+                        debugPrint("== value ==>$value");
                         setState(() {
                           monthYearValue = value;
-                          print("== monthYearValue ==>$monthYearValue");
+                          debugPrint("== monthYearValue ==>$monthYearValue");
                           String month = monthYearValue!.substring(0, 2);
                           String year = monthYearValue!.substring(3, 5);
-
-                          print("Month: $month");
-                          print("Year: $year");
+                          debugPrint("Month: $month");
+                          debugPrint("Year: $year");
                         });
                       },
                       controller: cardMonthYearController,
@@ -297,31 +311,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   int.parse(monthYearValue!.substring(0, 2)),
                   cardHolderNameController.text,
                   cardNumberController.text);
-              // await apis.ordercheckoutApi(
-              //   pl,
-              //   context,
-              //   widget.cartID,
-              //   widget.id,
-              //   widget.firstName,
-              //   widget.toggleTheme,
-              // );
-              // await pl.show();
-              // await apis.createAnOrderApi(
-              //     widget.data.id!,
-              //     widget.data.billingAddress!.firstName!,
-              //     widget.data.billingAddress!.lastName!,
-              //     widget.data.billingAddress!.address1!,
-              //     widget.data.billingAddress!.city!,
-              //     widget.data.billingAddress!.stateOrProvince!,
-              //     widget.data.billingAddress!.postalCode!,
-              //     widget.data.billingAddress!.country!,
-              //     widget.data.billingAddress!.countryCode!,
-              //     widget.data.billingAddress!.email!,
-              //     widget.lineItems,
-              //     pl,
-              //     context,
-              //     widget.toggleTheme);
-              // await pl.hide();
               await pl.hide();
             },
             child: Container(

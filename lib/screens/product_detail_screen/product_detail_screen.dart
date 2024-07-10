@@ -42,7 +42,6 @@ class _ProductDetailState extends State<ProductDetail> {
   TextEditingController controller = TextEditingController();
 
   String? allcartDataid;
-  int? qtyy;
   int selectedImageIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   ScrollController scrollController = ScrollController();
@@ -91,13 +90,10 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
-    print("==== ProductDetail ====");
+    debugPrint("==== ProductDetail ====${widget.data.id}");
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
-    // debugPrint(
-    //     "=== SpUtil.getDouble(SpConstUtil.totalqty === ${SpUtil.getDouble(SpConstUtil.totalqty)}");
 
     return Scaffold(
-      // appBar: productDetailAppbar(context, widget.toggleTheme, setState),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 16),
         child: Column(
@@ -126,9 +122,9 @@ class _ProductDetailState extends State<ProductDetail> {
                         color: colors.kSecondaryColor.withOpacity(0.2),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(0.99.h),
+                        padding: EdgeInsets.all(0.45.h),
                         child: Image.asset(
-                          "assets/png/back.png",
+                          "assets/png/left.png",
                           color: SpUtil.getBool(SpConstUtil.appTheme)!
                               ? colors.whitecolor
                               : colors.blackcolor,
@@ -145,43 +141,7 @@ class _ProductDetailState extends State<ProductDetail> {
                         : colors.blackcolor,
                   ),
                   const Spacer(),
-                  // TextButton(
-                  //   onPressed: () async {
-                  //     await Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => CartScreenn(
-                  //                   allcartDataids:
-                  //                       SpUtil.getString(SpConstUtil.cartID)!,
-                  //                   title: '',
-                  //                   toggleTheme: widget.toggleTheme,
-                  //                 )));
-                  //     setState(() {});
-                  //   },
-                  //   child: SpUtil.getDouble(SpConstUtil.totalqty) == 0.0
-                  //       ? Image.asset(
-                  //           "assets/png/grocery-store.png",
-                  //           color: SpUtil.getBool(SpConstUtil.appTheme)!
-                  //               ? colors.whitecolor
-                  //               : colors.blackcolor,
-                  //         )
-                  //       : badges.Badge(
-                  //           position: badges.BadgePosition.topEnd(
-                  //             top: -7,
-                  //             end: -5,
-                  //           ),
-                  //           badgeAnimation: const badges.BadgeAnimation.rotation(
-                  //             animationDuration: Duration(seconds: 1),
-                  //             colorChangeAnimationDuration: Duration(seconds: 1),
-                  //             loopAnimation: false,
-                  //             curve: Curves.fastOutSlowIn,
-                  //             colorChangeAnimationCurve: Curves.easeInCubic,
-                  //           ),
-                  //           badgeContent: text(
-                  //               "${SpUtil.getDouble(SpConstUtil.totalqty)!.toInt()}",
-                  //               color: colors.whitecolor,
-                  //               fontSize: 8),
-                  //           child:
+
                   TextButton(
                     onPressed: () async {
                       await Navigator.push(
@@ -200,11 +160,6 @@ class _ProductDetailState extends State<ProductDetail> {
                       width: 4.2.h,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        // border: Border.all(
-                        //   color: SpUtil.getBool(SpConstUtil.appTheme)!
-                        //       ? colors.whitecolor
-                        //       : colors.blackcolor,
-                        // ),
                         color: colors.kSecondaryColor.withOpacity(0.2),
                       ),
                       child: SpUtil.getDouble(SpConstUtil.totalqty) == 0.0

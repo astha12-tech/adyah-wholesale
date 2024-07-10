@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_print
-
 import 'package:adyah_wholesale/bloc/get_my_orders_bloc.dart';
 import 'package:adyah_wholesale/components/appbar/appbar_widget.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/my_orders_shimmer.dart';
+import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/model/get_my_orders_model.dart';
@@ -97,13 +96,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               ],
             );
           } else if (snapshot.hasData) {
-            return snapshot.data!.data!.list!.isEmpty
+            return snapshot.data!.data!.isEmpty
                 ? Center(
                     child: text("No Data"),
                   )
                 : ListView.builder(
                     physics: const BouncingScrollPhysics(),
-                    itemCount: snapshot.data!.data!.list!.length,
+                    itemCount: snapshot.data!.data!.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
@@ -112,7 +111,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                               MaterialPageRoute(
                                   builder: (context) => OrderDetailScreen(
                                         orderId: snapshot
-                                            .data!.data!.list![index].orderId!,
+                                            .data!.data![index].bcOrderId!,
                                       )));
                         },
                         child: Padding(
@@ -128,13 +127,13 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                     children: [
                                       orderTextWidget(
                                         "Order Number",
-                                        "#${snapshot.data!.data!.list![index].orderId}",
+                                        "#${snapshot.data!.data![index].bcOrderId}",
                                       ),
                                       const SizedBox(
                                         height: 8,
                                       ),
                                       orderTextWidget("Poduct total",
-                                          "\$${snapshot.data!.data!.list![index].totalIncTax}"),
+                                          "\$${snapshot.data!.data![index].totalIncTax}"),
                                       const SizedBox(
                                         height: 8,
                                       ),
@@ -142,18 +141,28 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                       // const SizedBox(
                                       //   height: 8,
                                       // ),
-                                      orderTextWidget("Order Placed",
-                                          "${snapshot.data!.data!.list![index].createdAt}"),
+                                      orderTextWidget(
+                                          "Order Placed",
+                                          DateFormat('MMM dd\'th\' yyyy').format(
+                                              DateTime.fromMillisecondsSinceEpoch(
+                                                  int.parse(
+                                                          "${snapshot.data!.data![index].createdAt}") *
+                                                      1000))),
                                       const SizedBox(
                                         height: 8,
                                       ),
-                                      orderTextWidget("Last Updated",
-                                          "${snapshot.data!.data!.list![index].updatedAt}"),
+                                      orderTextWidget(
+                                          "Last Updated",
+                                          DateFormat('MMM dd\'th\' yyyy').format(
+                                              DateTime.fromMillisecondsSinceEpoch(
+                                                  int.parse(
+                                                          "${snapshot.data!.data![index].updatedAt}") *
+                                                      1000))),
                                       const SizedBox(
                                         height: 8,
                                       ),
                                       orderTextWidget("Created By",
-                                          "${snapshot.data!.data!.list![index].firstName} ${snapshot.data!.data!.list![index].lastName}"),
+                                          "${SpUtil.getString(SpConstUtil.firstName)} ${SpUtil.getString(SpConstUtil.lastName)}"),
                                       const SizedBox(
                                         height: 15,
                                       ),
@@ -182,7 +191,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                             child: Padding(
                                               padding: EdgeInsets.all(1.h),
                                               child: text(
-                                                  "${snapshot.data!.data!.list![index].orderStatus}",
+                                                  "${snapshot.data!.data![index].status}",
                                                   color: SpUtil.getBool(
                                                           SpConstUtil.appTheme)!
                                                       ? colors.blackcolor
@@ -193,38 +202,45 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                           )
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: 2.h,
-                                      ),
+
+                                      sizedboxWidget(),
+
                                       Row(
                                         children: [
                                           text("ACTION",
                                               fontWeight: FontWeight.bold,
                                               fontSize: 10.sp),
                                           const Spacer(),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: SpUtil.getBool(
-                                                      SpConstUtil.appTheme)!
-                                                  ? colors.whitecolor
-                                                  : colors.themebluecolor,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Padding(
-                                              padding: EdgeInsets.all(1.h),
-                                              child: text("Reorder",
-                                                  color: SpUtil.getBool(
-                                                          SpConstUtil.appTheme)!
-                                                      ? colors.blackcolor
-                                                      : colors.whitecolor,
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 2.w,
-                                          ),
+                                          // GestureDetector(
+                                          //   onTap: () async {
+
+                                          //   },
+                                          //   child: Container(
+                                          //     decoration: BoxDecoration(
+                                          //       color: SpUtil.getBool(
+                                          //               SpConstUtil.appTheme)!
+                                          //           ? colors.whitecolor
+                                          //           : colors.themebluecolor,
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(10),
+                                          //     ),
+                                          //     child: Padding(
+                                          //       padding: EdgeInsets.all(1.h),
+                                          //       child: text("Reorder",
+                                          //           color: SpUtil.getBool(
+                                          //                   SpConstUtil
+                                          //                       .appTheme)!
+                                          //               ? colors.blackcolor
+                                          //               : colors.whitecolor,
+                                          //           fontSize: 10.sp,
+                                          //           fontWeight:
+                                          //               FontWeight.bold),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                          // SizedBox(
+                                          //   width: 2.w,
+                                          // ),
                                           Container(
                                             decoration: BoxDecoration(
                                               // color: colors.whitecolor,
