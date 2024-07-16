@@ -23,6 +23,7 @@ class CardDateFormatter extends TextInputFormatter {
     return TextEditingValue(
         text: newTextBuffer.toString(),
         selection: TextSelection.collapsed(
+          
             offset: newTextBuffer.length - selectionIndexFromRight));
   }
 }

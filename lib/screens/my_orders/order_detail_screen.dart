@@ -228,6 +228,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                         child: Column(
                                           children: [
                                             ListView.builder(
+                                              padding: EdgeInsets.zero,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
                                               shrinkWrap: true,

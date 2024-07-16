@@ -39,46 +39,6 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
     int crossAxisCount = MediaQuery.of(context).size.width ~/ 180;
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
     return Scaffold(
-        // appBar: AppBar(
-        //   leadingWidth: 14.w,
-        //   toolbarHeight: MediaQuery.of(context).size.height / 18,
-        //   scrolledUnderElevation: 0,
-        //   leading: TextButton(
-        //     onPressed: () {
-        //       Navigator.pop(context);
-        //     },
-        //     child: Container(
-        //       height: 4.h,
-        //       width: 4.h,
-        //       decoration: BoxDecoration(
-        //         shape: BoxShape.circle,
-        //         border: Border.all(
-        //             color: SpUtil.getBool(SpConstUtil.appTheme)!
-        //                 ? colors.whitecolor
-        //                 : colors.blackcolor),
-        //       ),
-        //       child: Padding(
-        //         padding: EdgeInsets.all(0.7.h),
-        //         child: Image.asset(
-        //           "assets/png/left.png",
-        //           color: SpUtil.getBool(SpConstUtil.appTheme)!
-        //               ? colors.whitecolor
-        //               : colors.blackcolor,
-        //         ),
-        //       ),
-        //     ),
-        //   ),
-        //   centerTitle: true,
-        //   iconTheme: IconThemeData(color: colors.whitecolor),
-
-        //   // backgroundColor: colors.themebluecolor,
-        //   title: text("Featured Products",
-        //       fontSize: 13.sp,
-        //       fontWeight: FontWeight.bold,
-        //       color: SpUtil.getBool(SpConstUtil.appTheme)!
-        //           ? colors.whitecolor
-        //           : colors.blackcolor),
-        // ),
         body: Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(

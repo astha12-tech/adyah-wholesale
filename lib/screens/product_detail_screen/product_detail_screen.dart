@@ -280,16 +280,17 @@ class _ProductDetailState extends State<ProductDetail> {
                       ],
                     ),
                     quantityTableWidget(
-                        colorLabels,
-                        sizeLabels,
-                        widget.data,
-                        setState,
-                        variantDataList,
-                        _formKey,
-                        pl,
-                        qty,
-                        controller,
-                        context: context),
+                      colorLabels,
+                      sizeLabels,
+                      widget.data,
+                      setState,
+                      variantDataList,
+                      _formKey,
+                      pl,
+                      qty,
+                      controller,
+                      context: context,
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -317,7 +318,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             ? Container()
                             : youMightAlsoLikeProductsWidget(
                                 context,
-                                widget.productsMainCategoryModel,
+                                widget.productsMainCategoryModel, 
                                 widget.data,
                                 widget.toggleTheme,
                                 setState)

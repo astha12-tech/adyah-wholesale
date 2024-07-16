@@ -34,6 +34,31 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // double? salePrice;
+
+  // Future<double?> fetchProductPrice(int productId) async {
+  //   try {
+  //     var welcome = await apis.priceListProductApi(productId);
+
+  //     if (welcome != null && welcome.data != null && welcome.data!.isNotEmpty) {
+  //       print(
+  //           "=== welcome.data![0].salePrice =====> ${welcome.data![0].salePrice}");
+  //       if (mounted) {
+  //         setState(() {
+  //           salePrice = welcome.data![0].salePrice;
+  //         });
+  //       }
+  //       return salePrice;
+  //     } else {
+  //       print("No data returned or empty data list");
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching product price: $e");
+  //     rethrow;
+  //   }
+  // }
+
   Set<String> savedWords = <String>{};
   Future<void> scanBarcodeNormal(ProgressLoader pl) async {
     String barcodeScanRes;
@@ -119,8 +144,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       currentIndex = p0;
                     });
                   }, currentIndex),
-                  featuredProductsWidget(pl, crossAxisCount, itemWidth,
-                      itemHeight, setState, savedWords, widget.toggleTheme),
+                  featuredProductsWidget(
+                    pl,
+                    crossAxisCount,
+                    itemWidth,
+                    itemHeight,
+                    setState,
+                    savedWords,
+                    widget.toggleTheme,
+                  ),
                   latestProductsWidget(pl, widget.toggleTheme, setState),
                   blogWidget(pl),
                 ],

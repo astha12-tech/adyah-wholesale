@@ -74,6 +74,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           scrolledUnderElevation: 0,
           toolbarHeight: MediaQuery.of(context).size.height / 18,
           automaticallyImplyLeading: false,
+
           centerTitle: true,
           // backgroundColor: colors.themebluecolor,
           title: text("Confirm Order",
@@ -191,6 +192,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   child: Row(
                     children: [
                       Transform.scale(
+                        
                         scale: 0.1.h,
                         child: Radio(
                           value: widget.data[i]['name'],

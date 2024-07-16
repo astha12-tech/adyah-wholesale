@@ -187,8 +187,8 @@ class _ProductsState extends State<Products> {
                                           "",
                                           pl,
                                           widget.categoryID == null
-                                              ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
-                                              : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage')
+                                              ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=1'
+                                              : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=1')
                                       .catchError((error) async {
                                     if (pl.isShowing()) {
                                       await pl.hide();
@@ -334,7 +334,14 @@ class _ProductsState extends State<Products> {
                                                                     .circular(
                                                                         5)),
                                                             child:
-                                                                CachedNetworkImage(
+                                                             snapshot
+                                                                  .data!
+                                                                  .data![index]
+                                                                  .primaryImage==null? Image.asset("assets/png/no_image.jpg",
+                                         height: 150,
+                                                              width: double
+                                                                  .infinity,
+                                                              fit: BoxFit.fill,):  CachedNetworkImage(
                                                               progressIndicatorBuilder:
                                                                   (context, url,
                                                                           downloadProgress) =>
@@ -379,15 +386,15 @@ class _ProductsState extends State<Products> {
                                                                     .createWishListApi(
                                                                         pl,
                                                                         productId);
-                                                                await productsMainCategoryBloc.productsMaincategoryBloc(
-                                                                    widget
-                                                                        .categoryID,
-                                                                    "",
-                                                                    pl,
-                                                                    widget.categoryID ==
-                                                                            null
-                                                                        ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
-                                                                        : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
+                                                                // await productsMainCategoryBloc.productsMaincategoryBloc(
+                                                                //     widget
+                                                                //         .categoryID,
+                                                                //     "",
+                                                                //     pl,
+                                                                //     widget.categoryID ==
+                                                                //             null
+                                                                //         ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
+                                                                //         : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
                                                                 await fetchData(
                                                                     pl);
                                                                 await pl.hide();
@@ -432,15 +439,15 @@ class _ProductsState extends State<Products> {
                                                                           .items![
                                                                               itemId]
                                                                           .id);
-                                                                  await productsMainCategoryBloc.productsMaincategoryBloc(
-                                                                      widget
-                                                                          .categoryID,
-                                                                      "",
-                                                                      pl,
-                                                                      widget.categoryID ==
-                                                                              null
-                                                                          ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
-                                                                          : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
+                                                                  // await productsMainCategoryBloc.productsMaincategoryBloc(
+                                                                  //     widget
+                                                                  //         .categoryID,
+                                                                  //     "",
+                                                                  //     pl,
+                                                                  //     widget.categoryID ==
+                                                                  //             null
+                                                                  //         ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
+                                                                  //         : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
                                                                   await fetchData(
                                                                       pl);
                                                                   await pl
@@ -461,15 +468,15 @@ class _ProductsState extends State<Products> {
                                                                       pl,
                                                                       wishlistId,
                                                                       productId);
-                                                                  await productsMainCategoryBloc.productsMaincategoryBloc(
-                                                                      widget
-                                                                          .categoryID,
-                                                                      "",
-                                                                      pl,
-                                                                      widget.categoryID ==
-                                                                              null
-                                                                          ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
-                                                                          : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
+                                                                  // await productsMainCategoryBloc.productsMaincategoryBloc(
+                                                                  //     widget
+                                                                  //         .categoryID,
+                                                                  //     "",
+                                                                  //     pl,
+                                                                  //     widget.categoryID ==
+                                                                  //             null
+                                                                  //         ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
+                                                                  //         : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
                                                                   await fetchData(
                                                                       pl);
                                                                   await pl
@@ -662,8 +669,8 @@ class _ProductsState extends State<Products> {
                         "",
                         pl,
                         widget.categoryID == null
-                            ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=$currentPage'
-                            : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=$currentPage');
+                            ? '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&brand_id=${widget.brandID}&is_featured=""&page=1'
+                            : '${urls.storesbaseUrl}${urls.products}?is_visible=true&include=images,primary_image,primary_image,variants,options&page=1&categories:in=${widget.categoryID}&is_featured=""&page=1');
                     fetchData(pl);
                     return const ProductsShimmer();
                   }

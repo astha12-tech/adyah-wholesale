@@ -35,6 +35,7 @@ import 'package:adyah_wholesale/model/home_banner_model.dart';
 import 'package:adyah_wholesale/model/latest_product_model.dart';
 import 'package:adyah_wholesale/model/new_products_model.dart';
 import 'package:adyah_wholesale/model/parent_category_model.dart';
+import 'package:adyah_wholesale/model/price_list_records.dart';
 import 'package:adyah_wholesale/model/pricelist_model.dart';
 import 'package:adyah_wholesale/model/products_category_model.dart';
 import 'package:adyah_wholesale/model/all_featured_products_model.dart';
@@ -2595,6 +2596,35 @@ class Apis {
   //   }
   //   return null;
   // }
+  Future<Welcome?> fetchProductPrice(int productId) async {
+    print("=== productID ===>$productId");
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {'X-Auth-Token': '8jnt2ou84m786kwmw99jbw6cq6p6ywb'};
+        var request = http.Request(
+            'GET',
+            Uri.parse(
+                'https://api.bigcommerce.com/stores/xahzcyt7cw/v3/pricelists/9/records?include=bulk_pricing_tiers,sku&product_id:in=$productId&limit=1'));
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+        debugPrint(
+            "=====priceListProductApi response.body ======>>${response.body}");
+        if (response.statusCode == 200) {
+          return Welcome.fromJson(jsonDecode(response.body));
+        }
+      } catch (e) {
+        // await pl.hide();
+        await showToast(commonData.error);
+      }
+    } else {
+      // await pl.hide();
+      await showToast(commonData.noInternet);
+    }
+    return null;
+  }
 
   Future<GetMyOrdersModel?> getMyOrdersApi(ProgressLoader pl, int limit) async {
     bool internet = await checkInternet();
