@@ -12,7 +12,7 @@ Widget text12(
     text,
     style: TextStyle(
       color: color,
-      fontFamily: "Roboto",
+      fontFamily: "OpenSans",
       fontSize: 12,
       fontWeight: fontWeight,
     ),

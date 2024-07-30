@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getBlogModel = getBlogModelFromJson(jsonString);
-
 import 'dart:convert';
 
 List<GetBlogModel> getBlogModelFromJson(String str) => List<GetBlogModel>.from(json.decode(str).map((x) => GetBlogModel.fromJson(x)));

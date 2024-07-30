@@ -90,7 +90,6 @@ class _ProductDetailState extends State<ProductDetail> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("==== ProductDetail ====${widget.data.id}");
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
 
     return Scaffold(
@@ -318,7 +317,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             ? Container()
                             : youMightAlsoLikeProductsWidget(
                                 context,
-                                widget.productsMainCategoryModel, 
+                                widget.productsMainCategoryModel,
                                 widget.data,
                                 widget.toggleTheme,
                                 setState)

@@ -3,6 +3,7 @@ import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
+import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/screens/home_screen/latest_products_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
@@ -242,12 +243,39 @@ StreamBuilder<productsmaincategorymodel.LatestProductModel>
                                   const SizedBox(
                                     height: 5,
                                   ),
-
-                                  // const Spacer(),
-                                  text("\$${snapshot.data!.data![i].price}",
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                  // const Spacer(),
+                                  commonData.alllatestProductfeature[i] == 0.0
+                                      ? text(
+                                          "\$${snapshot.data!.data![i].price}",
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        )
+                                      : Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            text(
+                                              "\$${commonData.alllatestProductfeature[i]}",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              "\$${snapshot.data!.data![i].price}",
+                                              style: TextStyle(
+                                                  fontFamily: "OpenSans",
+                                                  fontWeight: FontWeight.normal,
+                                                  color: colors.whitecolor
+                                                      .withOpacity(0.5),
+                                                  fontSize: 13,
+                                                  decoration: TextDecoration
+                                                      .lineThrough),
+                                            )
+                                          ],
+                                        ),
                                   const SizedBox(
                                     height: 5,
                                   ),

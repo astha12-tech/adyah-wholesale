@@ -56,7 +56,6 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
         toolbarHeight: MediaQuery.of(context).size.height / 18,
         automaticallyImplyLeading: false,
         centerTitle: true,
-        // backgroundColor: colors.themebluecolor,
         title: text("Blogs",
             fontSize: 13.sp,
             fontWeight: FontWeight.bold,
@@ -64,14 +63,6 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
                 ? colors.whitecolor
                 : colors.blackcolor),
       ),
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   backgroundColor: colors.themebluecolor,
-      //   title: text("Blog",
-      //       fontSize: 20,
-      //       fontWeight: FontWeight.bold,
-      //       color: colors.whitecolor),
-      // ),
       body: Column(
         children: [
           Expanded(
@@ -93,7 +84,6 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
                           Center(
                             child: SizedBox(
                               height: 40,
-                              // width: 70,
                               child: ElevatedButton(
                                   onPressed: () async {
                                     await pl.show();
@@ -134,12 +124,10 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
                                       padding: const EdgeInsets.only(
                                           left: 20, right: 20, top: 10),
                                       child: Card(
-                                        // color: colors.whitecolor,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            // color: colors.whitecolor,
                                           ),
                                           child: Column(
                                             children: [
@@ -220,73 +208,6 @@ class _AllBlogsScreenState extends State<AllBlogsScreen> {
                                     ),
                                   )
                                 : Container()
-
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //           builder: (context) => FlutterBlogDetailScreen(
-                          //             blogList: snapshot.data![i],
-                          //           ),
-                          //         ));
-                          //   },
-                          //   child: Container(
-                          //     color: Colors.transparent,
-                          //     child: Padding(
-                          //       padding: const EdgeInsets.all(8.0),
-                          //       child: Column(
-                          //         children: [
-                          //           SizedBox(
-                          //             height: 230,
-                          //             width: double.infinity,
-                          //             child: snapshot
-                          //                     .data![i].thumbnailPath!.isEmpty
-                          //                 ? Image.asset(
-                          //                     "assets/png/no_image.png",
-                          //                     fit: BoxFit.cover,
-                          //                   )
-                          //                 : CachedNetworkImage(
-                          //                     progressIndicatorBuilder: (context,
-                          //                             url, downloadProgress) =>
-                          //                         Center(
-                          //                           child:
-                          //                               CupertinoActivityIndicator(
-                          //                             color: colors.themebluecolor,
-                          //                           ),
-                          //                         ),
-                          //                     errorWidget: (context, url, error) =>
-                          //                         Icon(Icons.error),
-                          //                     imageUrl:
-                          //                         "https://adyahwholesale.com${snapshot.data![i].thumbnailPath!}",
-                          //                     fit: BoxFit.fill),
-                          //           ),
-                          //           // Image.network(
-                          //           //   "https://adyahwholesale.com${snapshot.data![i].thumbnailPath!}",
-                          //           //   fit: BoxFit.fill,
-                          //           // )),
-                          //           const SizedBox(
-                          //             height: 5,
-                          //           ),
-                          //           text(
-                          //               DateFormat('MMMM dd, yyyy').format(
-                          //                   snapshot.data![i].publishedDate!.date!),
-                          //               fontSize: 14,
-                          //               color: colors.blackcolor.withOpacity(0.4)),
-                          //           Text(
-                          //             snapshot.data![i].title!,
-                          //             style: const TextStyle(
-                          //               fontSize: 17,
-                          //               fontWeight: FontWeight.bold,
-                          //               fontFamily: "OpenSans",
-                          //             ),
-                          //             textAlign: TextAlign.center,
-                          //           )
-                          //         ],
-                          //       ),
-                          //     ),
-                          //   ),
-                          // )
                         ],
                       );
                     } else {

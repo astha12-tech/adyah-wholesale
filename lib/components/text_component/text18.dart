@@ -10,7 +10,7 @@ Text text18(String text, FontWeight fontWeight,
     style: TextStyle(
       color: color,
       fontSize: 18,
-      fontFamily: "Roboto",
+      fontFamily: "OpenSans",
       fontWeight: fontWeight,
     ),
     maxLines: maxLine,

@@ -36,15 +36,7 @@ class _DrawerShimmerState extends State<SearchShimmer> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // ListView.builder(
-        //   scrollDirection: Axis.horizontal,
-        //   physics: const NeverScrollableScrollPhysics(),
-        //   shrinkWrap: true,
-        //   itemCount: 3,
-        //   itemBuilder: (context, index) {
-        // return
-        Expanded(
+    return Expanded(
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -67,8 +59,6 @@ class _DrawerShimmerState extends State<SearchShimmer> {
                 ),
               ),
           ],
-          // );
-          // },
         ),
       ),
     );

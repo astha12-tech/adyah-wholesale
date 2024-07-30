@@ -32,8 +32,9 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
   int val = 0;
   final ScrollController _scrollController = ScrollController();
   Set<String> savedWords = <String>{};
-
+  List<int> ids = [];
   int currentPage = 1;
+
   @override
   Widget build(BuildContext context) {
     int crossAxisCount = MediaQuery.of(context).size.width ~/ 180;
@@ -114,8 +115,10 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
                                 onPressed: () async {
                                   await pl.show();
                                   await allFeaturedProductBloc
-                                      .featuredproductsBloc(pl,
-                                          '${urls.v3baseUrl}catalog/products?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage')
+                                      .featuredproductsBloc(
+                                    pl,
+                                    '${urls.v3baseUrl}catalog/products?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage',
+                                  )
                                       .catchError((error) async {
                                     if (pl.isShowing()) {
                                       await pl.hide();
@@ -151,9 +154,10 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
 
                                         currentPage++;
                                         allFeaturedProductBloc.paginatedData(
-                                            pl,
-                                            currentPage,
-                                            '${urls.v3baseUrl}${urls.catalogproducts}?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage');
+                                          pl,
+                                          currentPage,
+                                          '${urls.v3baseUrl}${urls.catalogproducts}?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage',
+                                        );
                                       });
                                     }
                                   }
@@ -181,6 +185,7 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
                                             snapshot.data!.data![index].name!;
                                         bool isSaved =
                                             savedWords.contains(storeLike);
+
                                         return GestureDetector(
                                           onTap: () async {
                                             SizerUtil.deviceType ==
@@ -386,12 +391,67 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
                                                                 ),
                                                               ],
                                                             ),
-                                                      text(
-                                                        "\$${snapshot.data!.data![index].price}",
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 15,
+                                                      const SizedBox(
+                                                        height: 5,
                                                       ),
+                                                      SpUtil.getInt(SpConstUtil
+                                                                  .priceListID) ==
+                                                              0
+                                                          ? text(
+                                                              "\$${snapshot.data!.data![index].price}",
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 15,
+                                                            )
+                                                          : commonData.allSalePrices[
+                                                                      index] ==
+                                                                  0.0
+                                                              ? text(
+                                                                  "\$${snapshot.data!.data![index].price}",
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 15,
+                                                                )
+                                                              : Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    text(
+                                                                      "\$${commonData.allSalePrices[index]}",
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          15,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 5,
+                                                                    ),
+                                                                    Text(
+                                                                      "\$${snapshot.data!.data![index].price}",
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "OpenSans",
+                                                                          fontWeight: FontWeight
+                                                                              .normal,
+                                                                          color: SpUtil.getBool(SpConstUtil.appTheme)!
+                                                                              ? colors.whitecolor.withOpacity(
+                                                                                  0.5)
+                                                                              : colors.blackcolor.withOpacity(
+                                                                                  0.5),
+                                                                          fontSize:
+                                                                              13,
+                                                                          decoration:
+                                                                              TextDecoration.lineThrough),
+                                                                    )
+                                                                  ],
+                                                                ),
                                                       const SizedBox(
                                                         height: 5,
                                                       )
@@ -413,8 +473,10 @@ class _FeaturedProductsScreenState extends State<FeaturedProductsScreen> {
                             ),
                           );
                   } else {
-                    allFeaturedProductBloc.featuredproductsBloc(pl,
-                        '${urls.v3baseUrl}catalog/products?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage');
+                    allFeaturedProductBloc.featuredproductsBloc(
+                      pl,
+                      '${urls.v3baseUrl}catalog/products?is_visible=true&include=images,primary_image,primary_image,variants,options&sort=id&direction=desc&is_featured=1&page=$currentPage',
+                    );
                     return const ProductsShimmer();
                   }
                 }),

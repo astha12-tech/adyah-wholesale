@@ -1,9 +1,3 @@
-// To parse this JSON data, do
-//
-//     final checkoutModel = checkoutModelFromJson(jsonString);
-
-// ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'dart:convert';
 
 CheckoutModel checkoutModelFromJson(String str) =>
@@ -664,7 +658,6 @@ class ShippingOption {
         "additional_description": additionalDescription,
       };
 }
-
 
 class Promotions {
   List<dynamic>? banners;

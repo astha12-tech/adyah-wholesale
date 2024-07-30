@@ -13,7 +13,7 @@ Widget text15(
     style: TextStyle(
       color: color,
       fontSize: 15,
-      fontFamily: "Roboto",
+      fontFamily: "OpenSans",
       fontWeight: fontWeight,
     ),
     maxLines: maxLine,

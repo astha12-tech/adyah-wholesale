@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getWishListModel = getWishListModelFromJson(jsonString);
-
 import 'dart:convert';
 
 GetWishListModel getWishListModelFromJson(String str) =>

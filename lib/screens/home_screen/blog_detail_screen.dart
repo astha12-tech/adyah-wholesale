@@ -246,16 +246,16 @@ class _FlutterBlogDetailScreenState extends State<FlutterBlogDetailScreen> {
                                               ),
                                         const SizedBox(
                                             height:
-                                                4), // Adjust spacing between image and text
+                                                4), 
                                         SizedBox(
-                                          width: 100, // Limiting width for text
+                                          width: 100,
                                           child: Text(
                                             snapshot.data![i].title!,
                                             style:
                                                 const TextStyle(fontSize: 12),
                                             maxLines: 2,
                                             overflow: TextOverflow
-                                                .ellipsis, // Ellipsis when text overflows
+                                                .ellipsis, 
                                           ),
                                         )
                                       ],

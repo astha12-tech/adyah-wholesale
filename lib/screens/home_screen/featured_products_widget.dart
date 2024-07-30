@@ -6,6 +6,7 @@ import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
+import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/screens/home_screen/featured_products_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
@@ -89,13 +90,15 @@ StreamBuilder<productsmaincategorymodel.ProductsMainCategoryModel>
                         fontWeight: FontWeight.bold),
                     const Spacer(),
                     GestureDetector(
-                      onTap: () {
-                        Navigator.push(
+                      onTap: () async {
+                        commonData.allSalePrices.clear();
+                        await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => FeaturedProductsScreen(
                                       toggleTheme: toggleTheme,
                                     )));
+                        setState(() {});
                       },
                       child: Container(
                         color: Colors.transparent,
@@ -122,6 +125,7 @@ StreamBuilder<productsmaincategorymodel.ProductsMainCategoryModel>
                   itemBuilder: (context, index) {
                     String storeLike = snapshot.data!.data![index].name!;
                     bool isSaved = savedWords.contains(storeLike);
+
                     // fetchProductPrice(snapshot.data!.data![index].id!);
                     return GestureDetector(
                       onTap: () async {
@@ -257,21 +261,64 @@ StreamBuilder<productsmaincategorymodel.ProductsMainCategoryModel>
                                             width: 5,
                                           ),
                                           text(
-                                            SpUtil.getString(
-                                                SpConstUtil.priceList)!,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                              fontSize: 15,
+                                              SpUtil.getString(
+                                                  SpConstUtil.priceList)!,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF31B0D8)),
                                         ],
                                       ),
-                                text(
-                                  "\$${snapshot.data!.data![index].price}",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                                const SizedBox(
+                                  height: 5,
                                 ),
-                                text(
-                                  "\$${snapshot.data!.data![index].price}",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                                SpUtil.getInt(SpConstUtil.priceListID) == 0
+                                    ? text(
+                                        "\$${snapshot.data!.data![index].price}",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      )
+                                    : commonData.allSalePricesfeature[index] ==
+                                            0.0
+                                        ? text(
+                                            "\$${snapshot.data!.data![index].price}",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              text(
+                                                "\$${commonData.allSalePricesfeature[index]}",
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 15,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "\$${snapshot.data!.data![index].price}",
+                                                style: TextStyle(
+                                                    fontFamily: "OpenSans",
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    color: SpUtil.getBool(
+                                                            SpConstUtil
+                                                                .appTheme)!
+                                                        ? colors.whitecolor
+                                                            .withOpacity(0.5)
+                                                        : colors.blackcolor
+                                                            .withOpacity(0.5),
+                                                    fontSize: 13,
+                                                    decoration: TextDecoration
+                                                        .lineThrough),
+                                              )
+                                            ],
+                                          ),
+                                const SizedBox(
+                                  height: 5,
                                 ),
                               ],
                             ),
@@ -288,7 +335,6 @@ StreamBuilder<productsmaincategorymodel.ProductsMainCategoryModel>
         }
       });
 }
-// ignore_for_file: prefer_const_constructors, avoid_print
 
 // import 'package:adyah_wholesale/api/api.dart';
 // import 'package:adyah_wholesale/api/urls.dart';

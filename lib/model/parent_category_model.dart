@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final parentCategoryModel = parentCategoryModelFromJson(jsonString);
-
 import 'dart:convert';
 
 ParentCategoryModel parentCategoryModelFromJson(String str) =>

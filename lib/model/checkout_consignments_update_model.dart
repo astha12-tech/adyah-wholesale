@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final checkoutConsignmentsUpdateModel = checkoutConsignmentsUpdateModelFromJson(jsonString);
-
 import 'dart:convert';
 
 CheckoutConsignmentsUpdateModel checkoutConsignmentsUpdateModelFromJson(

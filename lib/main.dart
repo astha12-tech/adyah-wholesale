@@ -1,6 +1,6 @@
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/launguage/app_langugage_provider.dart';
-import 'package:adyah_wholesale/screens/my_app.dart';
+import 'package:adyah_wholesale/my_app.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +16,7 @@ void main() async {
   await appLanguage.fetchLocale();
 
   runApp(DevicePreview(
-      builder: (context) => MyApp(
-            appLanguage: appLanguage,
+      builder: (context) => const MyApp(
+          // appLanguage: appLanguage,
           )));
 }

@@ -5,15 +5,16 @@ import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/text_component/fontweight.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text16.dart';
+import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/model/parent_category_model.dart';
-import 'package:adyah_wholesale/screens/products_screen/new_one_product_screen.dart';
+import 'package:adyah_wholesale/screens/products_screen/product_screen.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/home_screen_shimmer.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
 StreamBuilder<ParentCategoryModel> categoryWidget(
-    ProgressLoader pl, void Function() toggleTheme) {
+    ProgressLoader pl, void Function() toggleTheme, StateSetter setState) {
   return StreamBuilder<ParentCategoryModel>(
       stream: parentCategoryBloc.parentcategoryStream,
       builder: (context, snapshot) {
@@ -30,7 +31,6 @@ StreamBuilder<ParentCategoryModel> categoryWidget(
               Center(
                 child: SizedBox(
                   height: 40,
-                  // width: 70,
                   child: ElevatedButton(
                       onPressed: () async {
                         await pl.show();
@@ -57,11 +57,6 @@ StreamBuilder<ParentCategoryModel> categoryWidget(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Padding(
-                    //   padding: const EdgeInsets.all(8.0),
-                    //   child: text("Categories",
-                    //       fontSize: 20, fontWeight: FontWeight.bold),
-                    // ),
                     SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.horizontal,
@@ -74,6 +69,13 @@ StreamBuilder<ParentCategoryModel> categoryWidget(
                               index++)
                             GestureDetector(
                               onTap: () {
+                                debugPrint("==== tapped ====");
+                                setState(() {
+                                  commonData.alllmainProducts.clear();
+                                  commonData.isShow = false;
+                                  debugPrint(
+                                      "=== category page commonData.isShow ===>${commonData.isShow}");
+                                });
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

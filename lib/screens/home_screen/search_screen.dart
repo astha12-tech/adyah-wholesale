@@ -98,42 +98,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           enabledBorder: searchOutlineInputBorder,
                           hintText: "Search product",
                           prefixIcon: const Icon(Icons.search),
-                          // hintStyle: TextStyle(
-                          //     color: SpUtil.getBool(SpConstUtil.appTheme)!
-                          //         ? colors.whitecolor.withOpacity(0.4)
-                          //         : colors.blackcolor.withOpacity(0.4),
-                          //     fontFamily: "OpenSans"),
-                          // filled: true,
-                          // fillColor: Colors.transparent,
-                          // focusedErrorBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: BorderSide(
-                          //         color: SpUtil.getBool(SpConstUtil.appTheme)!
-                          //             ? colors.whitecolor
-                          //             : colors.blackcolor)),
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: BorderSide(
-                          //         color: SpUtil.getBool(SpConstUtil.appTheme)!
-                          //             ? colors.whitecolor
-                          //             : colors.blackcolor)),
-                          // enabledBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: BorderSide(
-                          //         color: SpUtil.getBool(SpConstUtil.appTheme)!
-                          //             ? colors.whitecolor
-                          //             : colors.blackcolor)),
-                          // contentPadding: const EdgeInsets.only(left: 15),
-                          // prefixIcon: Padding(
-                          //   padding: const EdgeInsets.all(11.0),
-                          //   child: Image.asset("assets/png/search.png",
-                          //       height: 20,
-                          //       width: 20,
-                          //       color: SpUtil.getBool(SpConstUtil.appTheme)!
-                          //           ? colors.whitecolor
-                          //           : colors.blackcolor),
-                          // ),
-                          // hintText: "Search..."
                         ),
                       ),
                     )),

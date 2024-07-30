@@ -60,7 +60,7 @@ StreamBuilder<List<HomeBannerModel>> homeBanner(
                       width: double.infinity,
                       child: CarouselSlider(
                         options: CarouselOptions(
-                          viewportFraction: 1,
+                          viewportFraction: 1,  
                           autoPlay: true,
                           autoPlayInterval: const Duration(seconds: 3),
                           onPageChanged: (index, reason) {
@@ -71,7 +71,6 @@ StreamBuilder<List<HomeBannerModel>> homeBanner(
                           return Builder(
                             builder: (BuildContext context) {
                               return Container(
-                                
                                 width: MediaQuery.of(context).size.width,
                                 // margin: EdgeInsets.only(right: 5),
                                 // margin: const EdgeInsets.symmetric(

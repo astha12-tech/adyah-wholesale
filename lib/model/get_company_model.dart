@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final getComapnyModel = getComapnyModelFromJson(jsonString);
-
 import 'dart:convert';
 
 GetComapnyModel getComapnyModelFromJson(String str) => GetComapnyModel.fromJson(json.decode(str));

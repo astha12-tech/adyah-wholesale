@@ -52,7 +52,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
         "========== company id ========== ${SpUtil.getString(SpConstUtil.companyID)}");
 
     return Scaffold(
-      appBar: appbar(context, "My Orders"),
+      appBar: appbar(context, "O R D E R S"),
       body: orderHistoryWidget(pl),
     );
   }
@@ -66,8 +66,11 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                text14new(snapshot.error,
-                    color: Colors.blue, fontWeight: FontWeight.bold),
+                text14new(
+                  snapshot.error,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -104,7 +107,11 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                     physics: const BouncingScrollPhysics(),
                     itemCount: snapshot.data!.data!.length,
                     itemBuilder: (context, index) {
-                      return GestureDetector(
+                      return
+                          // snapshot.data!.data![index].status == "Incomplete"
+                          //     ? Container()
+                          //     :
+                          GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
@@ -112,6 +119,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
                                   builder: (context) => OrderDetailScreen(
                                         orderId: snapshot
                                             .data!.data![index].bcOrderId!,
+                                        id: snapshot.data!.data![index].id,
                                       )));
                         },
                         child: Padding(

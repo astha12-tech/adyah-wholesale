@@ -16,10 +16,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import 'dart:developer' as log;
+
 
 StreamBuilder<List<GetBlogModel>> blogWidget(ProgressLoader pl) {
-  log.log('Hello World');
+
   return StreamBuilder<List<GetBlogModel>>(
       stream: blogBloc.blogStream,
       builder: (context, snapshot) {

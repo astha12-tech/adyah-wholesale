@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
-
 import 'package:adyah_wholesale/api/api.dart';
 import 'package:adyah_wholesale/bloc/cart_all_data_bloc.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
@@ -15,7 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-// ignore: must_be_immutable
 class CartScreenn extends StatefulWidget {
   String allcartDataids;
   String title;
@@ -35,9 +32,8 @@ class _CartScreennState extends State<CartScreenn> {
   int qty = 0;
   double totalQuantity = 0;
 
-// Function to calculate total quantity
   void calculateTotalQuantity(AsyncSnapshot<CartDataModel> snapshot) async {
-    totalQuantity = 0; // Reset totalQuantity before recalculating
+    totalQuantity = 0;
 
     if (snapshot.data != null &&
         snapshot.data!.data != null &&
@@ -45,7 +41,6 @@ class _CartScreennState extends State<CartScreenn> {
         snapshot.data!.data!.lineItems!.physicalItems != null) {
       for (var item in snapshot.data!.data!.lineItems!.physicalItems!) {
         totalQuantity += item.quantity!;
-        // debugPrint("=== totalQuantity ===>$totalQuantity");
       }
       await SpUtil.putDouble(SpConstUtil.totalqty, totalQuantity);
     }
@@ -62,10 +57,10 @@ class _CartScreennState extends State<CartScreenn> {
 
   Widget cartWidget(ProgressLoader pl) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 25,
           ),
           widget.title == ""
@@ -111,7 +106,7 @@ class _CartScreennState extends State<CartScreenn> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     text(
-                      "My Cart",
+                      "C A R T",
                       fontSize: 13.sp,
                       fontWeight: FontWeight.bold,
                       color: SpUtil.getBool(SpConstUtil.appTheme)!
@@ -142,7 +137,6 @@ class _CartScreennState extends State<CartScreenn> {
                               Center(
                                 child: SizedBox(
                                   height: 40,
-                                  // width: 70,
                                   child: ElevatedButton(
                                       onPressed: () async {
                                         await pl.show();
@@ -302,16 +296,18 @@ class _CartScreennState extends State<CartScreenn> {
                                                         ? Container()
                                                         : Row(
                                                             children: [
-                                                              text(
-                                                                  "${snapshot.data!.data!.lineItems!.physicalItems![index].options![0].name}: ",
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height /
-                                                                      70),
+                                                              Flexible(
+                                                                flex: 2,
+                                                                child: text(
+                                                                    "${snapshot.data!.data!.lineItems!.physicalItems![index].options![0].name}: ",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize: MediaQuery.of(context)
+                                                                            .size
+                                                                            .height /
+                                                                        70),
+                                                              ),
                                                               Expanded(
                                                                 child: Text(
                                                                   snapshot
@@ -660,7 +656,7 @@ class _CartScreennState extends State<CartScreenn> {
                                                   color: Colors.grey.shade300,
                                                 ))),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       Row(
@@ -783,7 +779,6 @@ class _CartScreennState extends State<CartScreenn> {
       toolbarHeight: MediaQuery.of(context).size.height / 18,
       automaticallyImplyLeading: false,
       centerTitle: true,
-      // backgroundColor: colors.themebluecolor,
       title: text("My Cart",
           fontSize: 13.sp,
           fontWeight: FontWeight.bold,

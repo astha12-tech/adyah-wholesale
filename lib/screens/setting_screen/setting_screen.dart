@@ -5,6 +5,7 @@ import 'package:adyah_wholesale/components/appbar/appbar_widget.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/model/get_customer_model.dart';
+import 'package:adyah_wholesale/my_app.dart';
 import 'package:adyah_wholesale/screens/authentication/login_screen.dart';
 import 'package:adyah_wholesale/screens/bottom_navigation_bar.dart';
 import 'package:adyah_wholesale/screens/setting_screen/about_us_screen.dart';
@@ -24,9 +25,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  bool lightDarktheme = false;
-  //AppLocalizations.of(context)!.translate('textToChange')!
-
   @override
   Widget build(BuildContext context) {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
@@ -36,7 +34,7 @@ class _SettingScreenState extends State<SettingScreen> {
 
     return Scaffold(
       // backgroundColor: colors.whitecolor,
-      appBar: appbar(context, "Settings"),
+      appBar: appbar(context, "S E T T I N G S"),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Column(
@@ -422,20 +420,41 @@ class _SettingScreenState extends State<SettingScreen> {
                           child: GestureDetector(
                             onTap: () async {
                               setState(() {
-                                // SpUtil.remove(SpConstUtil.accessToken);
                                 SpUtil.remove(SpConstUtil.customerID);
-
-                                debugPrint(
-                                    "== tokennnn ${SpUtil.getInt(SpConstUtil.customerID)}");
+                                SpUtil.remove(SpConstUtil.cartID);
+                                SpUtil.remove(SpConstUtil.firstName);
+                                SpUtil.remove(SpConstUtil.lastName);
+                                SpUtil.remove(SpConstUtil.countryCode);
+                                SpUtil.remove(SpConstUtil.postalCode);
+                                SpUtil.remove(SpConstUtil.country);
+                                SpUtil.remove(SpConstUtil.city);
+                                SpUtil.remove(SpConstUtil.country);
+                                SpUtil.remove(SpConstUtil.address1);
+                                SpUtil.remove(SpConstUtil.userEmail);
+                                SpUtil.remove(SpConstUtil.userEmail);
+                                SpUtil.remove(SpConstUtil.company);
+                                SpUtil.remove(SpConstUtil.stateOrProvince);
+                                SpUtil.remove(SpConstUtil.phone);
+                                SpUtil.remove(SpConstUtil.address2);
+                                // SpUtil.remove(SpConstUtil.storeHashValue);
+                                // SpUtil.remove(SpConstUtil.accessToken);
+                                // SpUtil.remove(SpConstUtil.clientSecret);
+                                // SpUtil.remove(SpConstUtil.clientId);
+                                SpUtil.remove(SpConstUtil.priceList);
+                                SpUtil.remove(SpConstUtil.companyID);
+                                // SpUtil.remove(SpConstUtil.authTokenV3);
+                                // SpUtil.remove(SpConstUtil.authTokenV2);
+                                SpUtil.remove(SpConstUtil.priceListID);
+                                SpUtil.remove(SpConstUtil.totalqty);
+                                SpUtil.remove(SpConstUtil.orderID);
                               });
 
                               // Navigator.pop(context);
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LoginScreen(
-                                      toggleTheme: toggleTheme,
-                                    ),
+                                    builder: (context) =>
+                                        LoginScreen(toggleTheme: toggleTheme),
                                   ),
                                   (route) => false);
                             },

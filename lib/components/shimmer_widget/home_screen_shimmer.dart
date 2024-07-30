@@ -301,10 +301,7 @@ class _FeaturedProductsShimmerState extends State<FeaturedProductsShimmer> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Shimmer.fromColors(
-            baseColor:
-                // colorss.isNotEmpty
-                //     ? colorss[index].withOpacity(0.5)
-                colors.greyColor.withOpacity(0.5),
+            baseColor: colors.greyColor.withOpacity(0.5),
             highlightColor: SpUtil.getBool(SpConstUtil.appTheme)!
                 ? colors.whitecolor.withOpacity(0.8)
                 : colors.greyColor.withOpacity(0.1),
@@ -376,8 +373,7 @@ class _LatestProductsShimmerState extends State<LatestProductsShimmer> {
 
   @override
   Widget build(BuildContext context) {
-    return // return
-        SingleChildScrollView(
+    return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10),
@@ -395,15 +391,13 @@ class _LatestProductsShimmerState extends State<LatestProductsShimmer> {
                       ? colors.whitecolor.withOpacity(0.8)
                       : colors.greyColor.withOpacity(0.1),
                   child: SkeletonUi(
-                    height: MediaQuery.of(context).size.height / 9,
-                    width: 160,
+                    height: MediaQuery.of(context).size.height / 4,
+                    width: 180,
                     radius: 10,
                   ),
                 ),
               ),
           ],
-          // );
-          // },
         ),
       ),
     );
@@ -441,15 +435,7 @@ class _DrawerShimmerState extends State<DrawerShimmer> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // ListView.builder(
-        //   scrollDirection: Axis.horizontal,
-        //   physics: const NeverScrollableScrollPhysics(),
-        //   shrinkWrap: true,
-        //   itemCount: 3,
-        //   itemBuilder: (context, index) {
-        // return
-        Column(
+    return Column(
       children: [
         for (int index = 0; index < 7; index++)
           Padding(
@@ -469,8 +455,6 @@ class _DrawerShimmerState extends State<DrawerShimmer> {
             ),
           ),
       ],
-      // );
-      // },
     );
   }
 }
@@ -527,8 +511,6 @@ class _BlogShrimmerListviewState extends State<BlogShrimmerListview> {
               ),
             ),
         ],
-        // );
-        // },
       ),
     );
   }

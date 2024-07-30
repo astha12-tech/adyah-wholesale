@@ -50,6 +50,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:adyah_wholesale/model/sub_category_modell.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Apis {
   showToast(String msg) {
@@ -513,7 +514,7 @@ class Apis {
               pl,
             );
             await getCustomerAddressApi(pl);
-            await priceListApi();
+            await priceListApi(pl);
             await pl.hide();
             await showToast("Login Successfully...");
             await Navigator.push(
@@ -665,6 +666,42 @@ class Apis {
           await pl.hide();
 
           debugPrint(response.reasonPhrase);
+        }
+      } catch (e) {
+        await pl.hide();
+        await showToast(commonData.error);
+      }
+    } else {
+      await pl.hide();
+      await showToast(commonData.noInternet);
+    }
+    return null;
+  }
+
+  getpriceListidApi(ProgressLoader pl, name) async {
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {
+          'X-Auth-Token': '${SpUtil.getString(SpConstUtil.accessToken)}'
+        };
+        var request = http.Request(
+            'GET',
+            Uri.parse(
+                'https://api.bigcommerce.com/stores/${SpUtil.getString(SpConstUtil.storeHashValue)}/v3/pricelists?name=$name'));
+        debugPrint("=== getpriceListidApi request ==>$request");
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+        debugPrint("=== getpriceListidApi response body ==>${response.body}");
+
+        if (response.statusCode == 200) {
+          SpUtil.putInt(SpConstUtil.priceListID,
+              jsonDecode(response.body)['data'][0]['id']);
+          await pl.hide();
+        } else {
+          await pl.hide();
         }
       } catch (e) {
         await pl.hide();
@@ -962,7 +999,25 @@ class Apis {
             "***====== productsMainCategoryApi response.statusCode ======*** ${response.statusCode}\n");
         if (response.statusCode == 200) {
           await pl.hide();
-          return ProductsMainCategoryModel.fromJson(jsonDecode(response.body));
+          var responseData = jsonDecode(response.body);
+          // Assuming responseData['data'] is a List<dynamic> containing items with 'id' field
+          if (SpUtil.getInt(SpConstUtil.priceListID) != 0) {
+            List<int> ids = List<int>.from(
+                responseData['data'].map((item) => item['id'] as int));
+            Map<int, double> priceMap = await apis.fetchProductPrice(ids);
+            List<double> pageSalePrices = [];
+            for (int id in ids) {
+              double salePrice = priceMap.containsKey(id) ? priceMap[id]! : 0.0;
+              pageSalePrices.add(salePrice);
+              debugPrint(
+                  'productsMainCategoryApi Sale price for product with id $id: $salePrice $id');
+            }
+
+            commonData.alllmainProducts.addAll(pageSalePrices);
+            debugPrint(
+                "allSalePrices: ${commonData.alllmainProducts}   page:$page");
+          }
+          return ProductsMainCategoryModel.fromJson(responseData);
         } else if (response.statusCode == 401) {
           await pl.hide();
 
@@ -1124,8 +1179,17 @@ class Apis {
     }
   }
 
-  generatePaymentAccessTokenApi(ProgressLoader pl, orderID, int expiryYear,
-      int expiryMonth, cardholderName, cardNumber) async {
+  generatePaymentAccessTokenApi(
+      ProgressLoader pl,
+      orderID,
+      int expiryYear,
+      int expiryMonth,
+      cardholderName,
+      cardNumber,
+      BuildContext context,
+      void Function() toggleTheme,
+      dynamic cartID,
+      void Function(void Function()) setState) async {
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -1152,8 +1216,20 @@ class Apis {
             "***====== generatePaymentAccessTokenApi response.statusCode ======*** ${response.body}\n");
         if (response.statusCode == 201) {
           // await pl.hide();
-          await paymentApi(pl, orderID, jsonDecode(response.body)['data']['id'],
-              cardNumber, cardholderName, expiryMonth, expiryYear);
+          await paymentApi(
+              pl,
+              orderID,
+              jsonDecode(response.body)['data']['id'],
+              cardNumber,
+              cardholderName,
+              expiryMonth,
+              expiryYear,
+              context,
+              toggleTheme,
+              cartID,
+              setState);
+          debugPrint(
+              "***====== paymentApi paymentaccessToken ======*** ${jsonDecode(response.body)['data']['id']}");
         } else if (response.statusCode == 422) {
           await pl.hide();
           await showToast(jsonDecode(response.body)['title']);
@@ -1169,8 +1245,18 @@ class Apis {
     }
   }
 
-  paymentApi(ProgressLoader pl, orderID, paymentaccessToken, cardNumber,
-      cardholderName, int expiryMonth, int expiryYear) async {
+  paymentApi(
+      ProgressLoader pl,
+      orderID,
+      paymentaccessToken,
+      cardNumber,
+      cardholderName,
+      int expiryMonth,
+      int expiryYear,
+      BuildContext context,
+      void Function() toggleTheme,
+      cartID,
+      StateSetter setState) async {
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -1194,11 +1280,13 @@ class Apis {
               "cardholder_name": cardholderName,
               "expiry_month": expiryMonth,
               "expiry_year": expiryYear,
-              "verification_value": "123"
+              // "verification_value": "123"
             },
             "payment_method_id": "authorizenet.card"
           }
         });
+        debugPrint(
+            "***====== paymentApi paymentaccessToken ======*** $paymentaccessToken");
         debugPrint("***====== paymentApi lineItems ======*** ${request.body}");
         request.headers.addAll(headers);
 
@@ -1207,10 +1295,22 @@ class Apis {
         debugPrint(
             "***====== paymentApi response.statusCode ======*** ${response.statusCode}\n");
         debugPrint(
-            "***====== paymentApi response.statusCode ======*** ${response.body}\n");
+            "***====== paymentApi response.body ======*** ${response.body}\n");
         if (response.statusCode == 201) {
-          await pl.hide();
+          // await pl.hide();
           await showToast("payment successfully...");
+          // await ordercheckoutUpdateApi(
+          //     pl, context, cartID, toggleTheme, setState);
+          await Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => OrderPlacedSuccessScreen(
+                toggleTheme: toggleTheme,
+                orderID: orderID,
+                firstName: SpUtil.getString(SpConstUtil.firstName)!,
+              ),
+            ),
+            (route) => false,
+          );
         } else if (response.statusCode == 422) {
           await pl.hide();
           await showToast(jsonDecode(response.body)['title']);
@@ -1346,9 +1446,9 @@ class Apis {
         http.Response response =
             await http.Response.fromStream(await request.send());
         debugPrint(
-            "======*** getPaymetMethodApi response.statusCode ======*** ${response.statusCode}\n");
+            "***====== getPaymetMethodApi response.statusCode ======*** ${response.statusCode}\n");
         debugPrint(
-            "======*** getPaymetMethodApi response.statusCode ======*** ${response.body}\n");
+            "***====== getPaymetMethodApi response.statusCode ======*** ${response.body}\n");
         if (response.statusCode == 200) {
           await pl.hide();
           // await deleteCart(
@@ -1361,6 +1461,7 @@ class Apis {
                         toggleTheme: toggleTheme,
                         data: jsonDecode(response.body)['data'],
                         cartID: cartID,
+                        orderID: orderID,
                       )));
         } else if (response.statusCode == 422) {
           await pl.hide();
@@ -1406,15 +1507,15 @@ class Apis {
 
           await SpUtil.putInt(
               SpConstUtil.orderID, jsonDecode(response.body)['data']['id']);
-          await apis.ordercheckoutUpdateApi(
-              pl, context, cartID, toggleTheme, setState);
-          // await getPaymetMethodApi(
-          //     pl,
-          //     context,
-          //     toggleTheme,
-          //     SpUtil.getInt(SpConstUtil.orderID),
-          //     cartID,
-          //  );
+          // await apis.ordercheckoutUpdateApi(
+          //     pl, context, cartID, toggleTheme, setState);
+          await getPaymetMethodApi(
+            pl,
+            context,
+            toggleTheme,
+            jsonDecode(response.body)['data']['id'],
+            cartID,
+          );
         } else if (response.statusCode == 422) {
           await pl.hide();
           await showToast(jsonDecode(response.body)['title']);
@@ -1447,8 +1548,8 @@ class Apis {
             Uri.parse(
                 '${urls.v2baseUrl}orders/${SpUtil.getInt(SpConstUtil.orderID)}'));
         request.body = json.encode({
-          "status_id": 7,
-          "payment_method": "cod",
+          "status_id": 11,
+          // "payment_method": "Test Payment Provider",
           "customer_id": '${SpUtil.getInt(SpConstUtil.customerID)}'
         });
         request.headers.addAll(headers);
@@ -1493,6 +1594,69 @@ class Apis {
       await showToast(commonData.noInternet);
     }
   }
+  // ordercheckoutUpdateApi(ProgressLoader pl, BuildContext context, String cartID,
+  //     void Function() toggleTheme, StateSetter setState) async {
+  //   debugPrint("***====== ordercheckoutApi ======*** ");
+
+  //   bool internet = await checkInternet();
+  //   if (internet) {
+  //     try {
+  //       var headers = {
+  //         'X-Auth-Token': '${SpUtil.getString(SpConstUtil.accessToken)}',
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //       };
+  //       var request = http.Request(
+  //           'PUT',
+  //           Uri.parse(
+  //               '${urls.v2baseUrl}orders/${SpUtil.getInt(SpConstUtil.orderID)}'));
+  //       request.body = json.encode({
+  //         "status_id": 7,
+  //         "payment_method": "cod",
+  //         "customer_id": '${SpUtil.getInt(SpConstUtil.customerID)}'
+  //       });
+  //       request.headers.addAll(headers);
+
+  //       http.Response response =
+  //           await http.Response.fromStream(await request.send());
+  //       debugPrint(
+  //           "***====== ordercheckoutApi response.statusCode ======*** ${response.statusCode}\n");
+  //       debugPrint(
+  //           "***====== ordercheckoutApi response.statusCode ======*** ${response.body}\n");
+  //       if (response.statusCode == 200) {
+  //         // await deleteCart(
+  //         //     cartID,
+  //         //     pl,
+  //         //     context,
+  //         //     toggleTheme,
+  //         //     jsonDecode(response.body)['billing_address']['first_name'],
+  //         //     jsonDecode(response.body)['id']);
+  //         await allCartDataApi(cartID, pl, setState);
+  //         await Navigator.of(context).pushAndRemoveUntil(
+  //           MaterialPageRoute(
+  //             builder: (context) => OrderPlacedSuccessScreen(
+  //               toggleTheme: toggleTheme,
+  //               orderID: jsonDecode(response.body)['id'],
+  //               firstName: jsonDecode(response.body)['billing_address']
+  //                   ['first_name'],
+  //             ),
+  //           ),
+  //           (route) => false,
+  //         );
+  //       } else if (response.statusCode == 422) {
+  //         await pl.hide();
+  //         await showToast(jsonDecode(response.body)['title']);
+  //       }
+  //     } catch (e) {
+  //       await pl.hide();
+  //       await showToast(commonData.error);
+  //     }
+  //   } else {
+  //     await pl.hide();
+
+  //     await showToast(commonData.noInternet);
+  //   }
+  // }
 
   createAnOrderApi(
       String cartID,
@@ -1808,36 +1972,37 @@ class Apis {
   }
 
   Future<List<HomeBannerModel>?> homebannerApi(ProgressLoader pl) async {
+    print("=== this one called =======");
     bool internet = await checkInternet();
     if (internet) {
-      try {
-        var request = http.Request('GET', Uri.parse(urls.homeBannerbaseUrl));
+      // try {
+      var request = http.Request('GET', Uri.parse(urls.homeBannerbaseUrl));
 
-        http.Response response =
-            await http.Response.fromStream(await request.send());
-        List<HomeBannerModel> getBlogModelListFromJson(String str) =>
-            List<HomeBannerModel>.from(
-                json.decode(str).map((x) => HomeBannerModel.fromJson(x)));
-        // debugPrint("=== response body homebanner ===>>${response.body}");
-        // debugPrint(
-        //     "=== response statuscode homebanner ===>>${response.statusCode}\n");
+      http.Response response =
+          await http.Response.fromStream(await request.send());
+      List<HomeBannerModel> getBlogModelListFromJson(String str) =>
+          List<HomeBannerModel>.from(
+              json.decode(str).map((x) => HomeBannerModel.fromJson(x)));
+      debugPrint("=== response body homebanner ===>>${response.body}");
+      debugPrint(
+          "=== response statuscode homebanner ===>>${response.statusCode}\n");
 
-        if (response.statusCode == 200) {
-          await pl.hide();
-          List<HomeBannerModel> blogPosts =
-              getBlogModelListFromJson(response.body);
-          return blogPosts;
-        } else {
-          await pl.hide();
-
-          debugPrint(response.reasonPhrase);
-        }
-      } catch (e) {
+      if (response.statusCode == 200) {
+        await pl.hide();
+        List<HomeBannerModel> blogPosts =
+            getBlogModelListFromJson(response.body);
+        return blogPosts;
+      } else {
         await pl.hide();
 
-        homeBannerBloc.homeBannerstreamController.sink
-            .addError(commonData.error);
+        debugPrint(response.reasonPhrase);
       }
+      // } catch (e) {
+      //   await pl.hide();
+
+      //   homeBannerBloc.homeBannerstreamController.sink
+      //       .addError(commonData.error);
+      // }
     } else {
       await pl.hide();
 
@@ -1866,7 +2031,40 @@ class Apis {
             await http.Response.fromStream(await request.send());
 
         if (response.statusCode == 200) {
-          return ProductsMainCategoryModel.fromJson(jsonDecode(response.body));
+          var responseData = jsonDecode(response.body);
+          // Assuming responseData['data'] is a List<dynamic> containing items with 'id' field
+          if (SpUtil.getInt(SpConstUtil.priceListID) != 0) {
+            List<int> ids = List<int>.from(
+                responseData['data'].map((item) => item['id'] as int));
+
+            // Fetch product prices for these IDs
+            Map<int, double> priceMap = await apis.fetchProductPrice(ids);
+
+            // Initialize a list to store the sale prices
+            List<double> pageSalePrices = [];
+            Set<int> processedIds =
+                {}; // Track processed IDs to avoid duplication
+
+            for (int id in ids) {
+              if (!processedIds.contains(id)) {
+                double salePrice =
+                    priceMap.containsKey(id) ? priceMap[id]! : 0.0;
+                pageSalePrices.add(salePrice);
+                processedIds.add(id); // Mark this ID as processed
+
+                debugPrint(
+                    'feauturedProductsApi Sale price for product with id $id: $salePrice');
+              }
+            }
+
+            // Clear previous sale prices and add new ones
+            commonData.allSalePricesfeature.clear();
+            commonData.allSalePricesfeature.addAll(pageSalePrices);
+
+            debugPrint(
+                "allSalePricess: ${commonData.allSalePricesfeature}   page:$page");
+          }
+          return ProductsMainCategoryModel.fromJson(responseData);
         } else {
           debugPrint(response.reasonPhrase);
         }
@@ -1888,6 +2086,7 @@ class Apis {
 
   Future<FeaturedProductModel?> allfeauturedProductsApi(
       ProgressLoader pl, int page, String url) async {
+    // List<double> allSalePrices = [];
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -1904,19 +2103,35 @@ class Apis {
             await http.Response.fromStream(await request.send());
 
         if (response.statusCode == 200) {
-          return FeaturedProductModel.fromJson(jsonDecode(response.body));
+          var responseData = jsonDecode(response.body);
+          // Assuming responseData['data'] is a List<dynamic> containing items with 'id' field
+          if (SpUtil.getInt(SpConstUtil.priceListID) != 0) {
+            List<int> ids = List<int>.from(
+                responseData['data'].map((item) => item['id'] as int));
+            Map<int, double> priceMap = await apis.fetchProductPrice(ids);
+            List<double> pageSalePrices = [];
+            for (int id in ids) {
+              double salePrice = priceMap.containsKey(id) ? priceMap[id]! : 0.0;
+              pageSalePrices.add(salePrice);
+              debugPrint(
+                  'allfeauturedProductsApi Sale price for product with id $id: $salePrice');
+            }
+
+            commonData.allSalePrices.addAll(pageSalePrices);
+            debugPrint(
+                "allSalePrices: ${commonData.allSalePrices}   page:$page");
+          }
+          return FeaturedProductModel.fromJson(responseData);
         } else {
           debugPrint(response.reasonPhrase);
         }
       } catch (e) {
         await pl.hide();
-
         featuredProductBloc.featuredproductsstreamController.sink
             .addError(commonData.error);
       }
     } else {
       await pl.hide();
-
       featuredProductBloc.featuredproductsstreamController.sink
           .addError(commonData.noInternet);
     }
@@ -1944,7 +2159,25 @@ class Apis {
             await http.Response.fromStream(await request.send());
 
         if (response.statusCode == 200) {
-          return LatestProductModel.fromJson(jsonDecode(response.body));
+          var responseData = jsonDecode(response.body);
+          if (SpUtil.getInt(SpConstUtil.priceListID) != 0) {
+            // Assuming responseData['data'] is a List<dynamic> containing items with 'id' field
+            List<int> ids = List<int>.from(
+                responseData['data'].map((item) => item['id'] as int));
+            Map<int, double> priceMap = await apis.fetchProductPrice(ids);
+            List<double> pageSalePrices = [];
+            for (int id in ids) {
+              double salePrice = priceMap.containsKey(id) ? priceMap[id]! : 0.0;
+              pageSalePrices.add(salePrice);
+              debugPrint(
+                  'latestProductsApi Sale price for product with id $id: $salePrice');
+            }
+
+            commonData.alllatestProductfeature.addAll(pageSalePrices);
+            debugPrint("allSalePrices: ${commonData.alllatestProductfeature}");
+          }
+          return LatestProductModel.fromJson(responseData);
+          // return LatestProductModel.fromJson(jsonDecode(response.body));
         } else {
           debugPrint(response.reasonPhrase);
         }
@@ -2516,7 +2749,7 @@ class Apis {
     return null;
   }
 
-  Future<PriceListModel?> priceListApi() async {
+  Future<PriceListModel?> priceListApi(ProgressLoader pl) async {
     bool internet = await checkInternet();
     if (internet) {
       try {
@@ -2543,20 +2776,22 @@ class Apis {
               "Not found this customer") {
             await SpUtil.putString(
                 SpConstUtil.priceList, jsonDecode(response.body)['pricelist']);
+            await getpriceListidApi(pl, jsonDecode(response.body)['pricelist']);
           }
 
           return PriceListModel.fromJson(jsonDecode(response.body));
         }
       } catch (e) {
-        // await pl.hide();
+        await pl.hide();
         await showToast(commonData.error);
       }
     } else {
-      // await pl.hide();
+      await pl.hide();
       await showToast(commonData.noInternet);
     }
     return null;
   }
+
   // Future<PriceListModel?> priceListApi() async {
   //   bool internet = await checkInternet();
   //   if (internet) {
@@ -2596,34 +2831,48 @@ class Apis {
   //   }
   //   return null;
   // }
-  Future<Welcome?> fetchProductPrice(int productId) async {
-    print("=== productID ===>$productId");
-    bool internet = await checkInternet();
-    if (internet) {
-      try {
-        var headers = {'X-Auth-Token': '8jnt2ou84m786kwmw99jbw6cq6p6ywb'};
-        var request = http.Request(
+  Future<Map<int, double>> fetchProductPrice(List<int> productIds) async {
+    Map<int, double> priceMap = {};
+    for (int productId in productIds) {
+      bool internet = await checkInternet();
+      if (internet) {
+        try {
+          var headers = {
+            'X-Auth-Token': '${SpUtil.getString(SpConstUtil.accessToken)}',
+          };
+          var request = http.Request(
             'GET',
             Uri.parse(
-                'https://api.bigcommerce.com/stores/xahzcyt7cw/v3/pricelists/9/records?include=bulk_pricing_tiers,sku&product_id:in=$productId&limit=1'));
-        request.headers.addAll(headers);
+                '${urls.v3baseUrl}pricelists/${SpUtil.getInt(SpConstUtil.priceListID)}/records?include=bulk_pricing_tiers,sku&product_id:in=$productId&limit=1'),
+          );
+          debugPrint("=== request ====>$request");
+          request.headers.addAll(headers);
 
-        http.Response response =
-            await http.Response.fromStream(await request.send());
-        debugPrint(
-            "=====priceListProductApi response.body ======>>${response.body}");
-        if (response.statusCode == 200) {
-          return Welcome.fromJson(jsonDecode(response.body));
+          http.Response response =
+              await http.Response.fromStream(await request.send());
+          debugPrint(
+              "=====priceListProductApi response.body ======>>${response.body}");
+          debugPrint("=====priceListProductApi productIds ======>>$productIds");
+          if (response.statusCode == 200) {
+            // Handle the response as needed
+            var responseData = jsonDecode(response.body);
+            if (responseData['data'].isNotEmpty) {
+              double salePrice = responseData['data'][0]['sale_price'] ?? 0.0;
+              priceMap[productId] = salePrice;
+              // print("===   priceMap[productId] ==>${priceMap[productId]}");
+            }
+            Welcome.fromJson(jsonDecode(response.body));
+          }
+        } catch (e) {
+          // Handle errors appropriately
+          await showToast(commonData.error);
         }
-      } catch (e) {
-        // await pl.hide();
-        await showToast(commonData.error);
+      } else {
+        // Handle no internet connection
+        await showToast(commonData.noInternet);
       }
-    } else {
-      // await pl.hide();
-      await showToast(commonData.noInternet);
     }
-    return null;
+    return priceMap;
   }
 
   Future<GetMyOrdersModel?> getMyOrdersApi(ProgressLoader pl, int limit) async {
@@ -2865,6 +3114,8 @@ class Apis {
 
       debugPrint(
           "***====== checkoutconsignmentsApi response ======*** ${response.body}\n");
+      debugPrint(
+          "***====== checkoutconsignmentsApi statusCode ======*** ${response.statusCode}\n");
 
       if (response.statusCode == 200) {
         // await apis.checkoutApi(pl, cartid, context, toggleTheme);
@@ -2873,17 +3124,24 @@ class Apis {
         if (checkoutModel
             .data!.consignments![0].availableShippingOptions!.isNotEmpty) {
           await checkoutconsignmentsUpdateApi(
-            pl,
-            checkoutModel.data!.consignments![0].id!,
-            cartid,
-            toggleTheme,
-            checkoutModel
-                .data!.consignments![0].availableShippingOptions![2].id!,
-            context,
-          );
+              pl,
+              checkoutModel.data!.consignments![0].id!,
+              cartid,
+              toggleTheme,
+              checkoutModel
+                  .data!.consignments![0].availableShippingOptions![2].id!,
+              context,
+              "apis");
         } else {
-          showToast(
-              "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.");
+          await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ShippingAddressScreen(
+                        checkoutModel: checkoutModel,
+                        toggleTheme: toggleTheme,
+                      )));
+          // showToast(
+          //     "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.");
         }
 
         return ConsignmentsModel.fromJson(jsonDecode(response.body));
@@ -2903,13 +3161,13 @@ class Apis {
   }
 
   Future<CheckoutConsignmentsUpdateModel?> checkoutconsignmentsUpdateApi(
-    ProgressLoader pl,
-    String consignmentsid,
-    String cartid,
-    void Function() toggleTheme,
-    String shippingOptionID,
-    BuildContext context,
-  ) async {
+      ProgressLoader pl,
+      String consignmentsid,
+      String cartid,
+      void Function() toggleTheme,
+      String shippingOptionID,
+      BuildContext context,
+      String title) async {
     debugPrint("***====== checkoutconsignmentsUpdateApi ======*** ");
     bool internet = await checkInternet();
     if (internet) {
@@ -2948,15 +3206,193 @@ class Apis {
                   jsonDecode(response.body));
 
           debugPrint("***====== checkoutModel ======*** $checkoutModel");
-          await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ShippingAddressScreen(
-                        checkoutModel: checkoutModel,
-                        toggleTheme: toggleTheme,
-                      )));
+          if (title == "apis") {
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ShippingAddressScreen(
+                          checkoutModel: checkoutModel,
+                          toggleTheme: toggleTheme,
+                        )));
+          }
           return CheckoutConsignmentsUpdateModel.fromJson(
               jsonDecode(response.body));
+        } else {
+          debugPrint(response.reasonPhrase);
+        }
+      } catch (e) {
+        await pl.hide();
+
+        await showToast(commonData.error);
+      }
+    } else {
+      await pl.hide();
+      await showToast(commonData.noInternet);
+    }
+    return null;
+  }
+
+  Future generateinvoiceNumberApi(ProgressLoader pl, orderID) async {
+    debugPrint("***====== generateinvoiceNumberApi ======*** ");
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {
+          'authToken':
+              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdG9yZV9oYXNoIjoieGFoemN5dDdjdyIsImRiIjoiZGVmYXVsdCIsImVtYWlsIjoiYWR5YWh3aG9sZXNhbGVAZ21haWwuY29tIiwibmFtZSI6IkJyaWplc2gtVjMiLCJldmVudF9jaGFubmVsIjoiYXBwIiwidG9rZW5fdmVyc2lvbiI6InYzIn0.PbqGyK1n830w54Iwse2rbma-cEqU4XNN2PSs1uiNrGc'
+        };
+        var request = http.Request(
+            'POST',
+            Uri.parse(
+                'https://api-b2b.bigcommerce.com/api/v3/io/ip/orders/$orderID/invoices'));
+
+        debugPrint(
+            "***====== generateinvoiceNumberApi request ======*** $request");
+
+        debugPrint(
+            "***====== generateinvoiceNumberApi request body ======*** ${request.body}");
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+        debugPrint(
+            "***====== generateinvoiceNumberApi response.statusCode ======*** ${response.statusCode}\n");
+
+        debugPrint(
+            "***====== generateinvoiceNumberApi response ======*** ${response.body}\n");
+
+        if (response.statusCode == 200) {
+          await pl.hide();
+          await invoicedownloadpdfApi(
+              pl, jsonDecode(response.body)['data']['invoiceId']);
+        } else {
+          debugPrint(response.reasonPhrase);
+        }
+      } catch (e) {
+        await pl.hide();
+
+        await showToast(commonData.error);
+      }
+    } else {
+      await pl.hide();
+      await showToast(commonData.noInternet);
+    }
+    return null;
+  }
+
+  Future getAllinvoiceNumberApi(ProgressLoader pl, orderID, ordernumber) async {
+    debugPrint("***====== getAllinvoiceNumberApi ======*** ");
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {
+          'authToken':
+              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdG9yZV9oYXNoIjoieGFoemN5dDdjdyIsImRiIjoiZGVmYXVsdCIsImVtYWlsIjoiYWR5YWh3aG9sZXNhbGVAZ21haWwuY29tIiwibmFtZSI6IkJyaWplc2gtVjMiLCJldmVudF9jaGFubmVsIjoiYXBwIiwidG9rZW5fdmVyc2lvbiI6InYzIn0.PbqGyK1n830w54Iwse2rbma-cEqU4XNN2PSs1uiNrGc'
+        };
+        var request = http.Request('GET',
+            Uri.parse('https://api-b2b.bigcommerce.com/api/v3/io/ip/invoices'));
+
+        debugPrint(
+            "***====== getAllinvoiceNumberApi request ======*** $request");
+
+        debugPrint(
+            "***====== getAllinvoiceNumberApi request body ======*** ${request.body}");
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+        debugPrint(
+            "***====== getAllinvoiceNumberApi response.statusCode ======*** ${response.statusCode}\n");
+
+        debugPrint(
+            "***====== getAllinvoiceNumberApi response ======*** ${response.body}\n");
+
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+
+          var dataList = jsonResponse['data'] as List;
+
+          bool orderFound = dataList
+              .any((item) => ordernumber == item['orderNumber'].toString());
+
+          if (!orderFound) {
+            await pl.hide();
+            await generateinvoiceNumberApi(pl, orderID);
+          } else {
+            // Find the specific invoiceID for the matched orderNumber
+            var matchingInvoice = dataList.firstWhere(
+                (item) => ordernumber == item['orderNumber'].toString(),
+                orElse: () => null);
+
+            if (matchingInvoice != null) {
+              // Use the invoiceID from the matching invoice
+              String invoiceIDFromResponse = matchingInvoice['id'].toString();
+              await invoicedownloadpdfApi(pl, invoiceIDFromResponse);
+            } else {
+              debugPrint(
+                  "No matching invoice found for order number $ordernumber.");
+            }
+          }
+        } else {
+          debugPrint(response.reasonPhrase);
+        }
+      } catch (e) {
+        await pl.hide();
+
+        await showToast(commonData.error);
+      }
+    } else {
+      await pl.hide();
+      await showToast(commonData.noInternet);
+    }
+    return null;
+  }
+
+  invoicedownloadpdfApi(ProgressLoader pl, invoiceID) async {
+    debugPrint("***====== invoicedownloadpdfApi ======*** ");
+    bool internet = await checkInternet();
+    if (internet) {
+      try {
+        var headers = {
+          'authToken':
+              'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdG9yZV9oYXNoIjoieGFoemN5dDdjdyIsImRiIjoiZGVmYXVsdCIsImVtYWlsIjoiYWR5YWh3aG9sZXNhbGVAZ21haWwuY29tIiwibmFtZSI6IkJyaWplc2gtVjMiLCJldmVudF9jaGFubmVsIjoiYXBwIiwidG9rZW5fdmVyc2lvbiI6InYzIn0.PbqGyK1n830w54Iwse2rbma-cEqU4XNN2PSs1uiNrGc'
+        };
+        var request = http.Request(
+            'GET',
+            Uri.parse(
+                'https://api-b2b.bigcommerce.com/api/v3/io/ip/invoices/${invoiceID}/download-pdf'));
+
+        debugPrint(
+            "***====== invoicedownloadpdfApi request ======*** $request");
+
+        debugPrint(
+            "***====== invoicedownloadpdfApi request body ======*** ${request.body}");
+        request.headers.addAll(headers);
+
+        http.Response response =
+            await http.Response.fromStream(await request.send());
+        debugPrint(
+            "***====== invoicedownloadpdfApi response.statusCode ======*** ${response.statusCode}\n");
+
+        debugPrint(
+            "***====== invoicedownloadpdfApi response ======*** ${response.body}\n");
+
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          var pdfUrl = jsonResponse['data']['url'];
+
+          if (pdfUrl != null && pdfUrl.isNotEmpty) {
+            // Open the PDF using the url_launcher package
+            if (await canLaunch(pdfUrl)) {
+              await launch(pdfUrl);
+            } else {
+              debugPrint("Could not launch $pdfUrl");
+              await showToast("Could not open PDF");
+            }
+          } else {
+            debugPrint("No PDF URL found in response.");
+            await showToast("No PDF available.");
+          }
         } else {
           debugPrint(response.reasonPhrase);
         }

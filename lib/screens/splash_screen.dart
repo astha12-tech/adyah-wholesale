@@ -8,10 +8,9 @@ import 'package:adyah_wholesale/screens/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
-  final bool isDarkMode;
   final VoidCallback toggleTheme;
   const SplashScreen(
-      {super.key, required this.isDarkMode, required this.toggleTheme});
+      {super.key,required this.toggleTheme});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();

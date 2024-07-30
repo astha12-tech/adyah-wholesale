@@ -5,8 +5,9 @@ import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
+import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/model/get_all_brands_model.dart';
-import 'package:adyah_wholesale/screens/products_screen/new_one_product_screen.dart';
+import 'package:adyah_wholesale/screens/products_screen/product_screen.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -96,7 +97,6 @@ class _BrandsScreenState extends State<BrandsScreen> {
                         Center(
                           child: SizedBox(
                             height: 40,
-                            // width: 70,
                             child: ElevatedButton(
                                 onPressed: () async {
                                   await pl.show();
@@ -125,6 +125,10 @@ class _BrandsScreenState extends State<BrandsScreen> {
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () async {
+                            setState(() {
+                              commonData.alllmainProducts.clear();
+                              commonData.isShow = false;
+                            });
                             await Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -191,14 +195,12 @@ class _BrandsScreenState extends State<BrandsScreen> {
                                           child: Text(
                                               snapshot.data!.data![index].name!,
                                               textAlign: TextAlign.center,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontFamily: "OpenSans",
-                                                  color: colors.whitecolor,
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 13)),
                                         ),
                                       ),
-                                      // ),
                                     ],
                                   )),
                             ),

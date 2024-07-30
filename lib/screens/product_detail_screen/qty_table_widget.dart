@@ -212,18 +212,7 @@ import 'package:sizer/sizer.dart';
 //           ),
 //         );
 // }
-// ignore_for_file: avoid_print
 
-import 'package:adyah_wholesale/components/indicator/indicator.dart';
-import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
-import 'package:adyah_wholesale/screens/product_detail_screen/add_cart_button_widget.dart';
-import 'package:adyah_wholesale/utils/colors.dart';
-import 'package:flutter/material.dart';
-
-import 'package:adyah_wholesale/screens/product_detail_screen/variant_data.dart';
-import 'package:adyah_wholesale/components/common_text_field/lazyload_textform_field.dart';
-import 'package:adyah_wholesale/components/text_component/text.dart';
-import 'package:sizer/sizer.dart';
 
 Widget quantityTableWidget(
     List<String> colorLabels,

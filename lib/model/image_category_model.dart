@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final imageCategoryModel = imageCategoryModelFromJson(jsonString);
-
 import 'dart:convert';
 
 ImageCategoryModel imageCategoryModelFromJson(String str) =>

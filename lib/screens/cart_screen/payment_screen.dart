@@ -16,13 +16,14 @@ class PaymentScreen extends StatefulWidget {
   void Function() toggleTheme;
   var data;
   var cartID;
+  var orderID;
 
-  PaymentScreen({
-    super.key,
-    required this.toggleTheme,
-    required this.data,
-    required this.cartID,
-  });
+  PaymentScreen(
+      {super.key,
+      required this.toggleTheme,
+      required this.data,
+      required this.cartID,
+      required this.orderID});
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -34,7 +35,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   //   "Authorize.Net",
   // ];
   // String selectedRadio = "COD";
-  String selectedInstrument = "COD";
+  String selectedInstrument = "Authorize.Net";
+  final _formKey = GlobalKey<FormState>();
+
+  // String selectedInstrument = "COD";
   CardTypee _cardType = CardTypee.unknown;
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController cardHolderNameController = TextEditingController();
@@ -44,7 +48,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
-    debugPrint("==== widget data ====> ${widget.data}");
 
     return Scaffold(
         appBar: AppBar(
@@ -84,7 +87,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ? colors.whitecolor
                   : colors.blackcolor),
         ),
-        body: paymentCODWidget(pl, context)
+        body: paymentWidget(pl, context)
         //  paymentWidget(pl, context),
         );
   }
@@ -131,8 +134,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
             onTap: () async {
               if (selectedInstrument == "COD") {
                 await pl.show();
-                await apis.ordercheckoutApi(
-                    pl, context, widget.cartID, widget.toggleTheme, setState);
+                // await apis.ordercheckoutApi(
+                //     pl, context, widget.cartID, widget.toggleTheme, setState);
                 // await apis.ordercheckoutUpdateApi(
                 //     pl, context, widget.cartID, widget.toggleTheme, setState);
                 // await apis.createAnOrderApi(
@@ -192,7 +195,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   child: Row(
                     children: [
                       Transform.scale(
-                        
                         scale: 0.1.h,
                         child: Radio(
                           value: widget.data[i]['name'],
@@ -216,88 +218,108 @@ class _PaymentScreenState extends State<PaymentScreen> {
             height: 3.h,
           ),
           selectedInstrument == "Authorize.Net"
-              ? Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      controller: cardNumberController,
-                      decoration: InputDecoration(
-                          prefix: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child:
-                                  CardNumberValidator.getCardIcon(_cardType)),
-                          border: const OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                            Radius.circular(10),
-                          )),
-                          hintText: "XXXX-XXXX-XXXX-XXXX",
-                          labelText: "Card Number",
-                          counterText: '',
-                          isDense: true),
-                      maxLength: 19,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        setState(() {
-                          _cardType = CardNumberValidator.getCardType(value);
-                          debugPrint("==== _cardType ==>>>>>>>$_cardType");
-                        });
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(19),
-                        CardNumberFormatter()
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      controller: cardHolderNameController,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                          labelText: 'Card Holder Name',
-                          labelStyle: TextStyle(color: colors.blackcolor),
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)))),
-                      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    TextFormField(
-                      onChanged: (value) {
-                        debugPrint("== value ==>$value");
-                        setState(() {
-                          monthYearValue = value;
-                          debugPrint("== monthYearValue ==>$monthYearValue");
-                          String month = monthYearValue!.substring(0, 2);
-                          String year = monthYearValue!.substring(3, 5);
-                          debugPrint("Month: $month");
-                          debugPrint("Year: $year");
-                        });
-                      },
-                      controller: cardMonthYearController,
-                      textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                          labelText: 'Month/Year',
-                          hintText: 'MM/YY',
-                          border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)))),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(4),
-                        CardDateFormatter()
-                      ],
-                    )
-                  ],
+              ? Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "please enter card number";
+                          }
+                          return null;
+                        },
+                        controller: cardNumberController,
+                        decoration: InputDecoration(
+                            prefix: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child:
+                                    CardNumberValidator.getCardIcon(_cardType)),
+                            border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            )),
+                            hintText: "XXXX-XXXX-XXXX-XXXX",
+                            labelText: "Card Number",
+                            counterText: '',
+                            isDense: true),
+                        maxLength: 19,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          setState(() {
+                            _cardType = CardNumberValidator.getCardType(value);
+                            debugPrint("==== _cardType ==>>>>>>>$_cardType");
+                          });
+                        },
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(19),
+                          CardNumberFormatter()
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "please enter card holder name...";
+                          }
+                          return null;
+                        },
+                        controller: cardHolderNameController,
+                        textInputAction: TextInputAction.next,
+                        decoration: const InputDecoration(
+                            labelText: 'Card Holder Name',
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)))),
+                        keyboardType: TextInputType.name,
+                        textCapitalization: TextCapitalization.words,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "please enter month/year...";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          debugPrint("== value ==>$value");
+                          setState(() {
+                            monthYearValue = value;
+                            debugPrint("== monthYearValue ==>$monthYearValue");
+                            String month = monthYearValue!.substring(0, 2);
+                            String year = monthYearValue!.substring(3, 5);
+                            debugPrint("Month: $month");
+                            debugPrint("Year: $year");
+                          });
+                        },
+                        controller: cardMonthYearController,
+                        textInputAction: TextInputAction.done,
+                        decoration: const InputDecoration(
+                            labelText: 'Month/Year',
+                            hintText: 'MM/YY',
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)))),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(4),
+                          CardDateFormatter()
+                        ],
+                      )
+                    ],
+                  ),
                 )
               : Container(),
           SizedBox(
@@ -305,15 +327,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ),
           GestureDetector(
             onTap: () async {
-              await pl.show();
-              apis.generatePaymentAccessTokenApi(
-                  pl,
-                  SpUtil.getInt(SpConstUtil.orderID),
-                  2000 + int.parse(monthYearValue!.substring(3, 5)),
-                  int.parse(monthYearValue!.substring(0, 2)),
-                  cardHolderNameController.text,
-                  cardNumberController.text);
-              await pl.hide();
+              if (_formKey.currentState!.validate()) {
+                await pl.show();
+                await apis.generatePaymentAccessTokenApi(
+                    pl,
+                    widget.orderID,
+                    2000 + int.parse(monthYearValue!.substring(3, 5)),
+                    int.parse(monthYearValue!.substring(0, 2)),
+                    cardHolderNameController.text,
+                    cardNumberController.text,
+                    context,
+                    widget.toggleTheme,
+                    widget.cartID,
+                    setState);
+                await pl.hide();
+              }
             },
             child: Container(
               width: double.infinity,

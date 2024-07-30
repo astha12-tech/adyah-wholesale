@@ -1,18 +1,16 @@
 // ignore_for_file: must_be_immutable, unused_element, use_build_context_synchronously
-
 import 'package:adyah_wholesale/api/api.dart';
 import 'package:adyah_wholesale/components/indicator/indicator.dart';
 import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/sizebox/sizebox.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
 import 'package:adyah_wholesale/model/billing_checkout_model.dart';
-import 'package:adyah_wholesale/model/checkout_consignments_update_model.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class ShippingAddressScreen extends StatefulWidget {
-  CheckoutConsignmentsUpdateModel checkoutModel;
+  dynamic checkoutModel;
   void Function() toggleTheme;
 
   ShippingAddressScreen(
@@ -85,8 +83,11 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
           .checkoutModel.data!.consignments![0].shippingAddress!.postalCode!;
       phoneNoController.text =
           widget.checkoutModel.data!.consignments![0].shippingAddress!.phone!;
-      _selectedShippingMethod = widget.checkoutModel.data!.consignments![0]
-          .selectedShippingOption!.description!;
+      if (widget.checkoutModel.data!.consignments![0].selectedShippingOption !=
+          null) {
+        _selectedShippingMethod = widget.checkoutModel.data!.consignments![0]
+            .selectedShippingOption!.description!;
+      }
     }
     super.initState();
   }
@@ -109,12 +110,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
   @override
   Widget build(BuildContext context) {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
-    debugPrint(
-        "=== consignments ==>${widget.checkoutModel.data!.consignments}");
-    debugPrint(
-        "=== consignments ==>${widget.checkoutModel.data!.consignments![0].selectedShippingOption}");
-    debugPrint(
-        "=== billingAddress!.firstName ==>${widget.checkoutModel.data!.billingAddress!.firstName}");
 
     return Scaffold(
         appBar: AppBar(
@@ -354,11 +349,39 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                                                   .description,
                                               groupValue:
                                                   _selectedShippingMethod,
-                                              onChanged: (value) {
+                                              onChanged: (value) async {
                                                 setState(() {
                                                   _selectedShippingMethod =
                                                       value.toString();
+                                                  debugPrint(
+                                                      "=== _selectedShippingMethod ===>$_selectedShippingMethod");
+                                                  debugPrint(
+                                                      "=== _selectedShippingMethod ===>${widget.checkoutModel.data!.cart!.id}");
                                                 });
+                                                await pl.show();
+                                                await apis
+                                                    .checkoutconsignmentsUpdateApi(
+                                                        pl,
+                                                        widget
+                                                            .checkoutModel
+                                                            .data!
+                                                            .consignments![
+                                                                indexx]
+                                                            .id!,
+                                                        widget.checkoutModel
+                                                            .data!.cart!.id!,
+                                                        widget.toggleTheme,
+                                                        widget
+                                                            .checkoutModel
+                                                            .data!
+                                                            .consignments![
+                                                                indexx]
+                                                            .availableShippingOptions![
+                                                                i]
+                                                            .id!,
+                                                        context,
+                                                        "shippingaddress");
+                                                await pl.hide();
                                               },
                                             ),
                                           ),
@@ -383,7 +406,15 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
                       ],
                     )
                   : Container(),
-
+              widget.checkoutModel.data!.consignments![0]
+                          .selectedShippingOption ==
+                      null
+                  ? const Text(
+                      "Unfortunately one or more items in your cart can't be shipped to your location. Please choose a different delivery address.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontFamily: "OpenSans"),
+                    )
+                  : Container(),
               // ListView.builder(
               //   physics: const NeverScrollableScrollPhysics(),
               //   shrinkWrap: true,
@@ -423,62 +454,70 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen> {
               sizedboxWidget(),
 
               TextButton(
-                onPressed: () async {
-                  BillingCheckoutModel? billingCheckoutModel;
-                  await pl.show();
-                  billingCheckoutModel = await apis.checkoutBillingApi(
-                      pl,
-                      widget.checkoutModel.data!.id!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.firstName!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.lastName!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.email!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.company!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.address1!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.address2!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.city!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.stateOrProvince!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.stateOrProvinceCode!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.countryCode!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.postalCode!,
-                      widget.checkoutModel.data!.consignments![0]
-                          .shippingAddress!.phone!,
-                      context,
-                      widget.toggleTheme);
-                  if (billingCheckoutModel != null) {
-                    // await apis.ordercheckoutApi(
-                    //   pl,
-                    //   context,
-                    //   widget.checkoutModel.data!.id!,
-                    //   widget.toggleTheme,
-                    // );
-                    await apis.getPaymetMethodApi(
-                      pl,
-                      context,
-                      widget.toggleTheme,
-                      SpUtil.getInt(SpConstUtil.orderID),
-                      widget.checkoutModel.data!.id!,
-                    );
-                  }
+                onPressed: widget.checkoutModel.data!.consignments![0]
+                            .selectedShippingOption ==
+                        null
+                    ? null
+                    : () async {
+                        BillingCheckoutModel? billingCheckoutModel;
+                        await pl.show();
+                        billingCheckoutModel = await apis.checkoutBillingApi(
+                            pl,
+                            widget.checkoutModel.data!.id!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.firstName!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.lastName!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.email!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.company!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.address1!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.address2!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.city!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.stateOrProvince!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.stateOrProvinceCode!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.countryCode!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.postalCode!,
+                            widget.checkoutModel.data!.consignments![0]
+                                .shippingAddress!.phone!,
+                            context,
+                            widget.toggleTheme);
+                        if (billingCheckoutModel != null) {
+                          await apis.ordercheckoutApi(
+                              pl,
+                              context,
+                              widget.checkoutModel.data!.id!,
+                              widget.toggleTheme,
+                              setState);
+                          // await apis.getPaymetMethodApi(
+                          //   pl,
+                          //   context,
+                          //   widget.toggleTheme,
+                          //   SpUtil.getInt(SpConstUtil.orderID),
+                          //   widget.checkoutModel.data!.id!,
+                          // );
+                        }
 
-                  await pl.hide();
-                },
+                        await pl.hide();
+                      },
                 child: Align(
                   alignment: Alignment.centerRight,
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(1.h),
-                        color: colors.themebluecolor),
+                        color: widget.checkoutModel.data!.consignments![0]
+                                    .selectedShippingOption ==
+                                null
+                            ? colors.themebluecolor.withOpacity(0.3)
+                            : colors.themebluecolor),
                     child: Padding(
                       padding: EdgeInsets.only(
                           left: 3.h, right: 3.h, top: 1.h, bottom: 1.h),

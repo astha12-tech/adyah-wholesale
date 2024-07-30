@@ -11,7 +11,6 @@ class BlogBloc {
   List<GetBlogModel>? blogModel;
   blogBlocc(ProgressLoader pl, String url) async {
     blogModel = await apis.getBlogApi(pl, url);
-
     blogstreamController.sink.add(blogModel!);
   }
 }

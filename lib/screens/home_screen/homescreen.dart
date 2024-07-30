@@ -7,6 +7,8 @@ import 'package:adyah_wholesale/components/text_component/fontweight.dart';
 import 'package:adyah_wholesale/components/text_component/text15.dart';
 import 'package:adyah_wholesale/components/text_component/text18.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
+import 'package:adyah_wholesale/global/global.dart';
+import 'package:adyah_wholesale/my_app.dart';
 import 'package:adyah_wholesale/screens/authentication/login_screen.dart';
 import 'package:adyah_wholesale/screens/bottom_navigation_bar.dart';
 import 'package:adyah_wholesale/screens/brands/brands_screen.dart';
@@ -16,13 +18,13 @@ import 'package:adyah_wholesale/screens/home_screen/category_widget.dart';
 import 'package:adyah_wholesale/screens/home_screen/featured_products_widget.dart';
 import 'package:adyah_wholesale/screens/home_screen/home_app_bar.dart';
 import 'package:adyah_wholesale/screens/home_screen/home_banner.dart';
-import 'package:adyah_wholesale/screens/home_screen/latest_products_widget.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_screen.dart';
 import 'package:adyah_wholesale/screens/product_detail_screen/product_detail_tablet.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:sizer/sizer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,31 +36,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // double? salePrice;
-
-  // Future<double?> fetchProductPrice(int productId) async {
-  //   try {
-  //     var welcome = await apis.priceListProductApi(productId);
-
-  //     if (welcome != null && welcome.data != null && welcome.data!.isNotEmpty) {
-  //       print(
-  //           "=== welcome.data![0].salePrice =====> ${welcome.data![0].salePrice}");
-  //       if (mounted) {
-  //         setState(() {
-  //           salePrice = welcome.data![0].salePrice;
-  //         });
-  //       }
-  //       return salePrice;
-  //     } else {
-  //       print("No data returned or empty data list");
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     print("Error fetching product price: $e");
-  //     rethrow;
-  //   }
-  // }
-
   Set<String> savedWords = <String>{};
   Future<void> scanBarcodeNormal(ProgressLoader pl) async {
     String barcodeScanRes;
@@ -112,7 +89,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int currentIndex = 0;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    commonData.allSalePricesfeature.clear();
+    super.initState();
+  }
 
+  List textList = [
+    'abs',
+    'absddddddd',
+    'absddd',
+    'absd',
+    'absddd',
+    'absdd',
+    'absd',
+    'absdddddddddd',
+    'abs',
+    'absddd',
+  ];
   @override
   Widget build(BuildContext context) {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
@@ -138,7 +132,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 15,
                   ),
-                  categoryWidget(pl, widget.toggleTheme),
+                  // Wrap(
+                  //   spacing: 4,
+                  //   children: [
+                  //     for (int i = 0; i < 10; i++)
+                  //       FilterChip(
+                  //         padding: EdgeInsets.zero,
+                  //         label: Text(textList[i]),
+                  //         onSelected: (value) {},
+                  //         selectedColor: Colors.green.shade500,
+                  //         backgroundColor: Colors.grey.shade500,
+                  //       )
+                  //   ],
+                  // ),
+                  categoryWidget(pl, widget.toggleTheme, setState),
                   homeBanner(pl, (p0) {
                     setState(() {
                       currentIndex = p0;
@@ -153,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     savedWords,
                     widget.toggleTheme,
                   ),
-                  latestProductsWidget(pl, widget.toggleTheme, setState),
+                  // latestProductsWidget(pl, widget.toggleTheme, setState),
                   blogWidget(pl),
                 ],
               ),
@@ -473,18 +480,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () async {
-                              await SpUtil.clear();
+                              setState(() {
+                                SpUtil.remove(SpConstUtil.customerID);
+                                SpUtil.remove(SpConstUtil.cartID);
+                                SpUtil.remove(SpConstUtil.firstName);
+                                SpUtil.remove(SpConstUtil.lastName);
+                                SpUtil.remove(SpConstUtil.countryCode);
+                                SpUtil.remove(SpConstUtil.postalCode);
+                                SpUtil.remove(SpConstUtil.country);
+                                SpUtil.remove(SpConstUtil.city);
+                                SpUtil.remove(SpConstUtil.country);
+                                SpUtil.remove(SpConstUtil.address1);
+                                SpUtil.remove(SpConstUtil.userEmail);
+                                SpUtil.remove(SpConstUtil.userEmail);
+                                SpUtil.remove(SpConstUtil.company);
+                                SpUtil.remove(SpConstUtil.stateOrProvince);
+                                SpUtil.remove(SpConstUtil.phone);
+                                SpUtil.remove(SpConstUtil.address2);
 
-                              debugPrint(
-                                  "== tokennnn ${SpUtil.getInt(SpConstUtil.customerID)}");
+                                SpUtil.remove(SpConstUtil.priceList);
+                                SpUtil.remove(SpConstUtil.companyID);
+
+                                SpUtil.remove(SpConstUtil.priceListID);
+                                SpUtil.remove(SpConstUtil.totalqty);
+                                SpUtil.remove(SpConstUtil.orderID);
+                              });
 
                               // Navigator.pop(context);
-                              await Navigator.pushAndRemoveUntil(
+                              Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => LoginScreen(
-                                      toggleTheme: toggleTheme,
-                                    ),
+                                    builder: (context) =>
+                                        LoginScreen(toggleTheme: toggleTheme),
                                   ),
                                   (route) => false);
                             },

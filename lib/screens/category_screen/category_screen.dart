@@ -7,8 +7,9 @@ import 'package:adyah_wholesale/components/shared_prefs/shared_prefs.dart';
 import 'package:adyah_wholesale/components/shimmer_widget/caegory_shimmer.dart';
 import 'package:adyah_wholesale/components/text_component/text14.dart';
 import 'package:adyah_wholesale/components/text_component/text.dart';
+import 'package:adyah_wholesale/global/global.dart';
 import 'package:adyah_wholesale/model/category_model.dart';
-import 'package:adyah_wholesale/screens/products_screen/new_one_product_screen.dart';
+import 'package:adyah_wholesale/screens/products_screen/product_screen.dart';
 import 'package:adyah_wholesale/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -24,7 +25,6 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   int index = 0;
-  List<bool> isExpanded = [];
   int? selected;
   int? subselected;
   @override
@@ -32,7 +32,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
 
     return Scaffold(
-        appBar: appbar(context, "Category"), body: categoryWidget(pl));
+        appBar: appbar(context, "C A T E G O R Y"), body: categoryWidget(pl));
   }
 
   StreamBuilder<CategoryModel> categoryWidget(ProgressLoader pl) {
@@ -52,7 +52,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 Center(
                   child: SizedBox(
                     height: 40,
-                    // width: 70,
                     child: ElevatedButton(
                         onPressed: () async {
                           await pl.show();
@@ -71,7 +70,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ],
             );
           } else if (snapshot.hasData) {
-            isExpanded = List.filled(snapshot.data!.data!.length, false);
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: Column(
@@ -82,68 +80,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        // snapshot.data!.data![i].children!.isEmpty
-                        //     ? GestureDetector(
-                        //         onTap: () {
-                        //           Navigator.push(
-                        //               context,
-                        //               MaterialPageRoute(
-                        //                   builder: (context) => Products(
-                        //                         title: snapshot
-                        //                             .data!.data![i].name!,
-                        //                         categoryID: snapshot
-                        //                             .data!.data![i].id!,
-                        //                       )));
-                        //         },
-                        //         child: Padding(
-                        //           padding: EdgeInsets.all(1.5.h),
-                        //           child: Container(
-                        //             width: double.infinity,
-                        //             // height: 60,
-                        //             decoration: BoxDecoration(
-                        //                 borderRadius:
-                        //                     BorderRadius.circular(10),
-                        //                 // color: colors.blackcolor,
-                        //                 border: Border.all(
-                        //                     color: SpUtil.getBool(
-                        //                             SpConstUtil.appTheme)!
-                        //                         ? colors.greyColor
-                        //                             .withOpacity(0.3)
-                        //                         : colors.blackcolor
-                        //                             .withOpacity(0.3))),
-                        //             child: Align(
-                        //               alignment: Alignment.centerLeft,
-                        //               child: Padding(
-                        //                 padding: EdgeInsets.only(left: 1.h),
-                        //                 child: Text(
-                        //                   snapshot.data!.data![i].name!,
-                        //                   style: TextStyle(
-                        //                     fontSize: 11.sp,
-                        //                     fontFamily: "OpenSans",
-                        //                     fontWeight: FontWeight.bold,
-                        //                   ),
-                        //                   textAlign: TextAlign.center,
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ),
-                        //       )
-                        //     :
                         Padding(
                           padding: EdgeInsets.all(1.5.h),
                           child: Container(
                             width: double.infinity,
-                            // height: 60,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                // color: colors.blackcolor,
                                 border: Border.all(
                                     color: SpUtil.getBool(SpConstUtil.appTheme)!
                                         ? colors.greyColor.withOpacity(0.3)
                                         : colors.blackcolor.withOpacity(0.3))),
                             child: ExpansionTile(
-                              // expansionAnimationStyle: AnimationStyle(
                               trailing:
                                   snapshot.data!.data![i].children!.isEmpty
                                       ? Container(
@@ -170,25 +117,53 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               collapsedShape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10))),
-                              // collapsedBackgroundColor:
-                              //     colors.themebluecolor,
-                              // backgroundColor: colors.themebluecolor,
-                              // expandedAlignment: Alignment.,
-                              // iconColor: colors.whitecolor,
-                              // collapsedIconColor: colors.whitecolor,
                               title: GestureDetector(
+                                // onTap: () async {
+                                //   commonData.alllmainProducts.clear();
+                                //   await Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (context) => Products(
+                                //                 title: snapshot
+                                //                     .data!.data![i].name!,
+                                //                 categoryID:
+                                //                     snapshot.data!.data![i].id!,
+                                //                 toggleTheme: widget.toggleTheme,
+                                //               )));
+                                //   setState(() {});
+                                // },
                                 onTap: () async {
-                                  await Navigator.push(
+                                  debugPrint("==== 1111 ====");
+                                  setState(() {
+                                    commonData.alllmainProducts.clear();
+                                    commonData.isShow = false;
+                                  });
+                                  try {
+                                    final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Products(
-                                                title: snapshot
-                                                    .data!.data![i].name!,
-                                                categoryID:
-                                                    snapshot.data!.data![i].id!,
-                                                toggleTheme: widget.toggleTheme,
-                                              )));
-                                  setState(() {});
+                                        builder: (context) => Products(
+                                          title: snapshot.data!.data![i].name!,
+                                          categoryID:
+                                              snapshot.data!.data![i].id!,
+                                          toggleTheme: widget.toggleTheme,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (result != null) {
+                                      setState(() {
+                                        commonData.alllmainProducts.clear();
+                                        commonData.isShow = false;
+                                        debugPrint(
+                                            "====  commonData.isShow 1111 ====${commonData.isShow}");
+                                      });
+                                      setState(() {});
+                                    }
+                                  } catch (e) {
+                                    // Handle any errors here
+                                    debugPrint('Error during navigation: $e');
+                                  }
                                 },
                                 child: Text(
                                   snapshot.data!.data![i].name!,
@@ -197,7 +172,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     fontFamily: "OpenSans",
                                     fontWeight: FontWeight.bold,
                                   ),
-                                  // textAlign: TextAlign.center,
                                 ),
                               ),
                               children: [
@@ -206,53 +180,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         snapshot
                                             .data!.data![i].children!.length;
                                     j++)
-                                  // snapshot.data!.data![i].children![j]
-                                  //         .children!.isEmpty
-                                  //     ? Padding(
-                                  //         padding: EdgeInsets.all(1.5.h),
-                                  //         child: GestureDetector(
-                                  //           onTap: () {
-                                  //             Navigator.push(
-                                  //                 context,
-                                  //                 MaterialPageRoute(
-                                  //                     builder: (context) =>
-                                  //                         Products(
-                                  //                           title: snapshot
-                                  //                               .data!
-                                  //                               .data![i]
-                                  //                               .children![
-                                  //                                   j]
-                                  //                               .name!,
-                                  //                           categoryID:
-                                  //                               snapshot
-                                  //                                   .data!
-                                  //                                   .data![
-                                  //                                       i]
-                                  //                                   .children![
-                                  //                                       j]
-                                  //                                   .id!,
-                                  //                         )));
-                                  //           },
-                                  //           child: Row(
-                                  //             children: [
-                                  //               Image.asset(
-                                  //                 "assets/png/dot_icon.png",
-                                  //                 height: 2.h,
-                                  //                 width: 2.h,
-                                  //               ),
-                                  //               SizedBox(
-                                  //                 width: 4.w,
-                                  //               ),
-                                  //               text(
-                                  //                 snapshot.data!.data![i]
-                                  //                     .children![j].name!,
-                                  //                 fontSize: 10.sp,
-                                  //               ),
-                                  //             ],
-                                  //           ),
-                                  //         ),
-                                  //       )
-                                  //     :
                                   ExpansionTile(
                                     trailing: snapshot.data!.data![i]
                                             .children![j].children!.isEmpty
@@ -266,7 +193,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     key: Key(
                                         'builder_${subselected.toString()}_$j'),
                                     initiallyExpanded: j == subselected,
-
                                     onExpansionChanged: (value) {
                                       if (value) {
                                         setState(() {
@@ -277,37 +203,64 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                       }
                                     },
                                     expandedAlignment: Alignment.centerLeft,
-                                    // iconColor:
-                                    //     colors.whitecolor,
-                                    // collapsedIconColor:
-                                    //     colors.whitecolor,
-                                    // backgroundColor:
-                                    //     colors.themebluecolor,
-
                                     backgroundColor:
                                         colors.greyColor.withOpacity(0.2),
-
                                     shape: InputBorder.none,
                                     title: GestureDetector(
+                                      // onTap: () async {
+                                      //   commonData.alllmainProducts.clear();
+                                      //   await Navigator.push(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) => Products(
+                                      //                 title: snapshot
+                                      //                     .data!
+                                      //                     .data![i]
+                                      //                     .children![j]
+                                      //                     .name!,
+                                      //                 categoryID: snapshot
+                                      //                     .data!
+                                      //                     .data![i]
+                                      //                     .children![j]
+                                      //                     .id!,
+                                      //                 toggleTheme:
+                                      //                     widget.toggleTheme,
+                                      //               )));
+                                      //   setState(() {});
+                                      // },
                                       onTap: () async {
-                                        await Navigator.push(
+                                        debugPrint("==== 2222 ====");
+                                        setState(() {
+                                          commonData.alllmainProducts.clear();
+                                          commonData.isShow = false;
+                                        });
+                                        try {
+                                          final result = await Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Products(
-                                                      title: snapshot
-                                                          .data!
-                                                          .data![i]
-                                                          .children![j]
-                                                          .name!,
-                                                      categoryID: snapshot
-                                                          .data!
-                                                          .data![i]
-                                                          .children![j]
-                                                          .id!,
-                                                      toggleTheme:
-                                                          widget.toggleTheme,
-                                                    )));
-                                        setState(() {});
+                                              builder: (context) => Products(
+                                                title: snapshot.data!.data![i]
+                                                    .children![j].name!,
+                                                categoryID: snapshot.data!
+                                                    .data![i].children![j].id!,
+                                                toggleTheme: widget.toggleTheme,
+                                              ),
+                                            ),
+                                          );
+
+                                          if (result != null) {
+                                            setState(() {
+                                              commonData.alllmainProducts
+                                                  .clear();
+                                              commonData.isShow = false;
+                                            });
+                                            setState(() {});
+                                          }
+                                        } catch (e) {
+                                          // Handle any errors here
+                                          debugPrint(
+                                              'Error during navigation: $e');
+                                        }
                                       },
                                       child: SizedBox(
                                         width: double.infinity,
@@ -317,8 +270,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                               "assets/png/dot_icon.png",
                                               height: 2.h,
                                               width: 2.h,
-                                              // color: colors
-                                              //     .whitecolor,
                                             ),
                                             SizedBox(
                                               width: 4.w,
@@ -339,26 +290,65 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     ),
                                     children: [
                                       GestureDetector(
+                                        // onTap: () async {
+                                        //   commonData.alllmainProducts.clear();
+                                        //   Navigator.push(
+                                        //       context,
+                                        //       MaterialPageRoute(
+                                        //           builder: (context) =>
+                                        //               Products(
+                                        //                 title: snapshot
+                                        //                     .data!
+                                        //                     .data![i]
+                                        //                     .children![j]
+                                        //                     .name!,
+                                        //                 categoryID: snapshot
+                                        //                     .data!
+                                        //                     .data![i]
+                                        //                     .children![j]
+                                        //                     .id!,
+                                        //                 toggleTheme:
+                                        //                     widget.toggleTheme,
+                                        //               )));
+                                        //   setState(() {});
+                                        // },
                                         onTap: () async {
-                                          Navigator.push(
+                                          debugPrint("==== 3333 ====");
+                                          setState(() {
+                                            commonData.alllmainProducts.clear();
+                                            commonData.isShow = false;
+                                          });
+                                          try {
+                                            final result = await Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Products(
-                                                        title: snapshot
-                                                            .data!
-                                                            .data![i]
-                                                            .children![j]
-                                                            .name!,
-                                                        categoryID: snapshot
-                                                            .data!
-                                                            .data![i]
-                                                            .children![j]
-                                                            .id!,
-                                                        toggleTheme:
-                                                            widget.toggleTheme,
-                                                      )));
-                                          setState(() {});
+                                                builder: (context) => Products(
+                                                  title: snapshot.data!.data![i]
+                                                      .children![j].name!,
+                                                  categoryID: snapshot
+                                                      .data!
+                                                      .data![i]
+                                                      .children![j]
+                                                      .id!,
+                                                  toggleTheme:
+                                                      widget.toggleTheme,
+                                                ),
+                                              ),
+                                            );
+
+                                            if (result != null) {
+                                              setState(() {
+                                                commonData.alllmainProducts
+                                                    .clear();
+                                                commonData.isShow = false;
+                                              });
+                                              setState(() {});
+                                            }
+                                          } catch (e) {
+                                            // Handle any errors here
+                                            debugPrint(
+                                                'Error during navigation: $e');
+                                          }
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -411,6 +401,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                                                   GestureDetector(
                                                                 onTap:
                                                                     () async {
+                                                                  debugPrint(
+                                                                      "==== 5555 ====");
+                                                                  setState(() {
+                                                                    commonData
+                                                                        .alllmainProducts
+                                                                        .clear();
+                                                                    commonData
+                                                                            .isShow =
+                                                                        false;
+                                                                  });
                                                                   await Navigator.push(
                                                                       context,
                                                                       MaterialPageRoute(
@@ -468,150 +468,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             ),
                           ),
                         )
-                        // GestureDetector(
-                        //   onTap: () async {
-                        //     setState(() {
-                        //       isExpanded[i] = !isExpanded[i];
-                        //       index = i;
-                        //     });
-                        //     // var response = await apis.subcategoryListApi();
-                        //     // if (response!.data!.isNotEmpty) {
-                        //     //   await Navigator.push(
-                        //     //       // ignore: use_build_context_synchronously
-                        //     //       context,
-                        //     //       MaterialPageRoute(
-                        //     //           builder: (context) =>
-                        //     //               CategoryDetailSCreen(
-                        //     //                 categoryID:
-                        //     //                     snapshot.data!.data![i].id!,
-                        //     //               )));
-                        //     // } else {
-                        //     //   await Navigator.push(
-                        //     //       // ignore: use_build_context_synchronously
-                        //     //       context,
-                        //     //       MaterialPageRoute(
-                        //     //           builder: (context) =>
-                        //     //               CategoryProductsScreen(
-                        //     //                 categoryModel: snapshot.data,
-                        //     //                 index: i,
-                        //     //                 categoryId:
-                        //     //                     snapshot.data!.data![i].id!,
-                        //     //               )));
-                        //     // }
-                        //   },
-                        //   child: Padding(
-                        //     padding: const EdgeInsets.all(14.0),
-                        //     child: Container(
-                        //       decoration: BoxDecoration(
-                        //           borderRadius: BorderRadius.circular(10),
-                        //           color: colors.whitecolor.withOpacity(0.2),
-                        //           image: const DecorationImage(
-                        //               image: AssetImage(
-                        //                   // "assets/png/no_image.jpg"
-                        //                   "assets/png/slider_5th_image.jpg"),
-                        //               fit: BoxFit.cover,
-                        //               opacity: 0.5)),
-                        //       child: Center(
-                        //           child: Padding(
-                        //         padding: const EdgeInsets.all(40.0),
-                        //         child: Text(
-                        //           snapshot.data!.data![i].name!,
-                        //           style: const TextStyle(
-                        //               fontSize: 18,
-                        //               fontFamily: "OpenSans",
-                        //               fontWeight: FontWeight.bold),
-                        //           textAlign: TextAlign.center,
-                        //         ),
-                        //       )),
-                        //     ),
-                        //   ),
-                        // ),
-                        // if (isExpanded[
-                        //     i]) // Show additional content when expanded
-                        //   const ExpansionTile(
-                        //     title: Text('Additional Content'),
-                        //     children: <Widget>[
-                        //       // Additional content goes here
-                        //     ],
-                        //   ),
                       ],
                     ),
                 ],
               ),
             );
-
-            // GridView.count(
-            //   crossAxisCount: 2,
-            //   crossAxisSpacing: 10,
-            //   mainAxisSpacing: 10,
-            //   physics: const BouncingScrollPhysics(),
-            //   children: snapshot.data!.data!.map((item) {
-            //     int index = snapshot.data!.data!.indexOf(item);
-            //     return GestureDetector(
-            //       onTap: () async {
-            //         var response = await apis.subcategoryListApi(item.id!);
-            //         if (response!.data!.isNotEmpty) {
-            //           await Navigator.push(
-            //               // ignore: use_build_context_synchronously
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => CategoryDetailSCreen(
-            //                         parentID: item.id!,
-            //                         categoryID: item.id!,
-            //                       )));
-            //         } else {
-            //           await Navigator.push(
-            //               // ignore: use_build_context_synchronously
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => CategoryProductsScreen(
-            //                         categoryModel: snapshot.data,
-            //                         index: index,
-            //                         categoryId: item.id!,
-            //                       )));
-            //         }
-            //       },
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(8.0),
-            //         child: Card(
-            //             elevation: 12,
-            //             child: Container(
-            //               decoration: BoxDecoration(
-            //                 borderRadius: BorderRadius.circular(10),
-            //                 color: Color(
-            //                         (math.Random().nextDouble() * 0xFFFFFF)
-            //                             .toInt())
-            //                     .withOpacity(0.2),
-            //                 image: item.imageUrl == null ||
-            //                         item.imageUrl!.isEmpty
-            //                     ? const DecorationImage(
-            //                         image: AssetImage(
-            //                             // "assets/png/no_image.jpg"
-            //                             "assets/png/slider_3rd_image.jpg"),
-            //                         fit: BoxFit.cover,
-            //                         opacity: 0.2)
-            //                     : DecorationImage(
-            //                         image: NetworkImage(item.imageUrl!),
-            //                         fit: BoxFit.cover,
-            //                       ),
-            //               ),
-            //               child: Center(
-            //                   child: Padding(
-            //                 padding: const EdgeInsets.all(4.0),
-            //                 child: Text(
-            //                   item.name!,
-            //                   style: const TextStyle(
-            //                       fontSize: 18,
-            //                       fontFamily: "OpenSans",
-            //                       fontWeight: FontWeight.bold),
-            //                   textAlign: TextAlign.center,
-            //                 ),
-            //               )),
-            //             )),
-            //       ),
-            //     );
-            //   }).toList(),
-            // );
           } else {
             categoryBloc.categoryBloc(pl);
             return const Center(child: CategoryShimmerr());

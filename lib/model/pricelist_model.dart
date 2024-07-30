@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final priceListModel = priceListModelFromJson(jsonString);
-
 import 'dart:convert';
 
 PriceListModel priceListModelFromJson(String str) =>

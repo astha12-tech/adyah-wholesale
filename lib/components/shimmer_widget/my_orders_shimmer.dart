@@ -58,8 +58,6 @@ class _MyOrdersShimmerState extends State<MyOrdersShimmer> {
               ),
             ),
         ],
-        // );
-        // },
       ),
     );
   }
@@ -136,8 +134,6 @@ class _OrderDetailShimmerState extends State<OrderDetailShimmer> {
               ),
             ),
         ],
-        // );
-        // },
       ),
     );
   }

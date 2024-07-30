@@ -6,7 +6,8 @@ import 'package:sizer/sizer.dart';
 
 AppBar appbar(BuildContext context, String title) {
   return AppBar(
-    scrolledUnderElevation: 0,
+    elevation: 0,
+    forceMaterialTransparency: true,
     toolbarHeight: MediaQuery.of(context).size.height / 18,
     automaticallyImplyLeading: false,
     centerTitle: true,

@@ -1,229 +1,228 @@
-// To parse this JSON data, do
-//
-//     final getMyOrdersDetailsModel = getMyOrdersDetailsModelFromJson(jsonString);
-
 import 'dart:convert';
 
-GetMyOrdersDetailsModel getMyOrdersDetailsModelFromJson(String str) => GetMyOrdersDetailsModel.fromJson(json.decode(str));
+GetMyOrdersDetailsModel getMyOrdersDetailsModelFromJson(String str) =>
+    GetMyOrdersDetailsModel.fromJson(json.decode(str));
 
-String getMyOrdersDetailsModelToJson(GetMyOrdersDetailsModel data) => json.encode(data.toJson());
+String getMyOrdersDetailsModelToJson(GetMyOrdersDetailsModel data) =>
+    json.encode(data.toJson());
 
 class GetMyOrdersDetailsModel {
-    int? code;
-    String? message;
-    Data? data;
+  int? code;
+  String? message;
+  Data? data;
 
-    GetMyOrdersDetailsModel({
-        this.code,
-        this.message,
-        this.data,
-    });
+  GetMyOrdersDetailsModel({
+    this.code,
+    this.message,
+    this.data,
+  });
 
-    factory GetMyOrdersDetailsModel.fromJson(Map<String, dynamic> json) => GetMyOrdersDetailsModel(
+  factory GetMyOrdersDetailsModel.fromJson(Map<String, dynamic> json) =>
+      GetMyOrdersDetailsModel(
         code: json["code"],
         message: json["message"],
         data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "code": code,
         "message": message,
         "data": data?.toJson(),
-    };
+      };
 }
 
 class Data {
-    int? id;
-    int? customerId;
-    String? dateCreated;
-    String? dateModified;
-    String? dateShipped;
-    int? statusId;
-    String? status;
-    String? subtotalExTax;
-    String? subtotalIncTax;
-    String? subtotalTax;
-    String? baseShippingCost;
-    String? shippingCostExTax;
-    String? shippingCostIncTax;
-    String? shippingCostTax;
-    int? shippingCostTaxClassId;
-    String? baseHandlingCost;
-    String? handlingCostExTax;
-    String? handlingCostIncTax;
-    String? handlingCostTax;
-    int? handlingCostTaxClassId;
-    String? baseWrappingCost;
-    String? wrappingCostExTax;
-    String? wrappingCostIncTax;
-    String? wrappingCostTax;
-    int? wrappingCostTaxClassId;
-    String? totalExTax;
-    String? totalIncTax;
-    String? totalTax;
-    int? itemsTotal;
-    int? itemsShipped;
-    String? paymentMethod;
-    String? paymentProviderId;
-    String? paymentStatus;
-    String? refundedAmount;
-    bool? orderIsDigital;
-    String? storeCreditAmount;
-    String? giftCertificateAmount;
-    String? ipAddress;
-    String? ipAddressV6;
-    String? geoipCountry;
-    String? geoipCountryIso2;
-    int? currencyId;
-    String? currencyCode;
-    String? currencyExchangeRate;
-    int? defaultCurrencyId;
-    String? defaultCurrencyCode;
-    dynamic staffNotes;
-    dynamic customerMessage;
-    String? discountAmount;
-    String? couponDiscount;
-    int? shippingAddressCount;
-    bool? isDeleted;
-    String? ebayOrderId;
-    dynamic cartId;
-    BillingAddress? billingAddress;
-    bool? isEmailOptIn;
-    String? creditCardType;
-    String? orderSource;
-    int? dataChannelId;
-    dynamic externalSource;
-    Consignments? consignments;
-    List<Product>? products;
-    Consignments? shippingAddresses;
-    Consignments? coupons;
-    dynamic externalId;
-    dynamic externalMerchantId;
-    String? taxProviderId;
-    String? customerLocale;
-    String? externalOrderId;
-    String? storeDefaultCurrencyCode;
-    String? storeDefaultToTransactionalExchangeRate;
-    String? customStatus;
-    List<ShippingAddress>? shippingAddress;
-    bool? shipments;
-    String? poNumber;
-    int? bundleDateModified;
-    int? bundleDateCreated;
-    Money? money;
-    String? referenceNumber;
-    int? isInvoiceOrder;
-    dynamic extraInt2;
-    dynamic extraInt3;
-    dynamic extraInt4;
-    dynamic extraInt5;
-    dynamic extraStr1;
-    dynamic extraStr2;
-    dynamic extraStr3;
-    dynamic extraStr4;
-    dynamic extraStr5;
-    dynamic extraText;
-    dynamic extraInfo;
-    dynamic channelId;
-    String? channelName;
+  int? id;
+  int? customerId;
+  String? dateCreated;
+  String? dateModified;
+  String? dateShipped;
+  int? statusId;
+  String? status;
+  String? subtotalExTax;
+  String? subtotalIncTax;
+  String? subtotalTax;
+  String? baseShippingCost;
+  String? shippingCostExTax;
+  String? shippingCostIncTax;
+  String? shippingCostTax;
+  int? shippingCostTaxClassId;
+  String? baseHandlingCost;
+  String? handlingCostExTax;
+  String? handlingCostIncTax;
+  String? handlingCostTax;
+  int? handlingCostTaxClassId;
+  String? baseWrappingCost;
+  String? wrappingCostExTax;
+  String? wrappingCostIncTax;
+  String? wrappingCostTax;
+  int? wrappingCostTaxClassId;
+  String? totalExTax;
+  String? totalIncTax;
+  String? totalTax;
+  int? itemsTotal;
+  int? itemsShipped;
+  String? paymentMethod;
+  String? paymentProviderId;
+  String? paymentStatus;
+  String? refundedAmount;
+  bool? orderIsDigital;
+  String? storeCreditAmount;
+  String? giftCertificateAmount;
+  String? ipAddress;
+  String? ipAddressV6;
+  String? geoipCountry;
+  String? geoipCountryIso2;
+  int? currencyId;
+  String? currencyCode;
+  String? currencyExchangeRate;
+  int? defaultCurrencyId;
+  String? defaultCurrencyCode;
+  dynamic staffNotes;
+  dynamic customerMessage;
+  String? discountAmount;
+  String? couponDiscount;
+  int? shippingAddressCount;
+  bool? isDeleted;
+  String? ebayOrderId;
+  dynamic cartId;
+  BillingAddress? billingAddress;
+  bool? isEmailOptIn;
+  String? creditCardType;
+  String? orderSource;
+  int? dataChannelId;
+  dynamic externalSource;
+  Consignments? consignments;
+  List<Product>? products;
+  Consignments? shippingAddresses;
+  Consignments? coupons;
+  dynamic externalId;
+  dynamic externalMerchantId;
+  String? taxProviderId;
+  String? customerLocale;
+  String? externalOrderId;
+  String? storeDefaultCurrencyCode;
+  String? storeDefaultToTransactionalExchangeRate;
+  String? customStatus;
+  List<ShippingAddress>? shippingAddress;
+  bool? shipments;
+  String? poNumber;
+  int? bundleDateModified;
+  int? bundleDateCreated;
+  Money? money;
+  String? referenceNumber;
+  int? isInvoiceOrder;
+  dynamic extraInt2;
+  dynamic extraInt3;
+  dynamic extraInt4;
+  dynamic extraInt5;
+  dynamic extraStr1;
+  dynamic extraStr2;
+  dynamic extraStr3;
+  dynamic extraStr4;
+  dynamic extraStr5;
+  dynamic extraText;
+  dynamic extraInfo;
+  dynamic channelId;
+  String? channelName;
 
-    Data({
-        this.id,
-        this.customerId,
-        this.dateCreated,
-        this.dateModified,
-        this.dateShipped,
-        this.statusId,
-        this.status,
-        this.subtotalExTax,
-        this.subtotalIncTax,
-        this.subtotalTax,
-        this.baseShippingCost,
-        this.shippingCostExTax,
-        this.shippingCostIncTax,
-        this.shippingCostTax,
-        this.shippingCostTaxClassId,
-        this.baseHandlingCost,
-        this.handlingCostExTax,
-        this.handlingCostIncTax,
-        this.handlingCostTax,
-        this.handlingCostTaxClassId,
-        this.baseWrappingCost,
-        this.wrappingCostExTax,
-        this.wrappingCostIncTax,
-        this.wrappingCostTax,
-        this.wrappingCostTaxClassId,
-        this.totalExTax,
-        this.totalIncTax,
-        this.totalTax,
-        this.itemsTotal,
-        this.itemsShipped,
-        this.paymentMethod,
-        this.paymentProviderId,
-        this.paymentStatus,
-        this.refundedAmount,
-        this.orderIsDigital,
-        this.storeCreditAmount,
-        this.giftCertificateAmount,
-        this.ipAddress,
-        this.ipAddressV6,
-        this.geoipCountry,
-        this.geoipCountryIso2,
-        this.currencyId,
-        this.currencyCode,
-        this.currencyExchangeRate,
-        this.defaultCurrencyId,
-        this.defaultCurrencyCode,
-        this.staffNotes,
-        this.customerMessage,
-        this.discountAmount,
-        this.couponDiscount,
-        this.shippingAddressCount,
-        this.isDeleted,
-        this.ebayOrderId,
-        this.cartId,
-        this.billingAddress,
-        this.isEmailOptIn,
-        this.creditCardType,
-        this.orderSource,
-        this.dataChannelId,
-        this.externalSource,
-        this.consignments,
-        this.products,
-        this.shippingAddresses,
-        this.coupons,
-        this.externalId,
-        this.externalMerchantId,
-        this.taxProviderId,
-        this.customerLocale,
-        this.externalOrderId,
-        this.storeDefaultCurrencyCode,
-        this.storeDefaultToTransactionalExchangeRate,
-        this.customStatus,
-        this.shippingAddress,
-        this.shipments,
-        this.poNumber,
-        this.bundleDateModified,
-        this.bundleDateCreated,
-        this.money,
-        this.referenceNumber,
-        this.isInvoiceOrder,
-        this.extraInt2,
-        this.extraInt3,
-        this.extraInt4,
-        this.extraInt5,
-        this.extraStr1,
-        this.extraStr2,
-        this.extraStr3,
-        this.extraStr4,
-        this.extraStr5,
-        this.extraText,
-        this.extraInfo,
-        this.channelId,
-        this.channelName,
-    });
+  Data({
+    this.id,
+    this.customerId,
+    this.dateCreated,
+    this.dateModified,
+    this.dateShipped,
+    this.statusId,
+    this.status,
+    this.subtotalExTax,
+    this.subtotalIncTax,
+    this.subtotalTax,
+    this.baseShippingCost,
+    this.shippingCostExTax,
+    this.shippingCostIncTax,
+    this.shippingCostTax,
+    this.shippingCostTaxClassId,
+    this.baseHandlingCost,
+    this.handlingCostExTax,
+    this.handlingCostIncTax,
+    this.handlingCostTax,
+    this.handlingCostTaxClassId,
+    this.baseWrappingCost,
+    this.wrappingCostExTax,
+    this.wrappingCostIncTax,
+    this.wrappingCostTax,
+    this.wrappingCostTaxClassId,
+    this.totalExTax,
+    this.totalIncTax,
+    this.totalTax,
+    this.itemsTotal,
+    this.itemsShipped,
+    this.paymentMethod,
+    this.paymentProviderId,
+    this.paymentStatus,
+    this.refundedAmount,
+    this.orderIsDigital,
+    this.storeCreditAmount,
+    this.giftCertificateAmount,
+    this.ipAddress,
+    this.ipAddressV6,
+    this.geoipCountry,
+    this.geoipCountryIso2,
+    this.currencyId,
+    this.currencyCode,
+    this.currencyExchangeRate,
+    this.defaultCurrencyId,
+    this.defaultCurrencyCode,
+    this.staffNotes,
+    this.customerMessage,
+    this.discountAmount,
+    this.couponDiscount,
+    this.shippingAddressCount,
+    this.isDeleted,
+    this.ebayOrderId,
+    this.cartId,
+    this.billingAddress,
+    this.isEmailOptIn,
+    this.creditCardType,
+    this.orderSource,
+    this.dataChannelId,
+    this.externalSource,
+    this.consignments,
+    this.products,
+    this.shippingAddresses,
+    this.coupons,
+    this.externalId,
+    this.externalMerchantId,
+    this.taxProviderId,
+    this.customerLocale,
+    this.externalOrderId,
+    this.storeDefaultCurrencyCode,
+    this.storeDefaultToTransactionalExchangeRate,
+    this.customStatus,
+    this.shippingAddress,
+    this.shipments,
+    this.poNumber,
+    this.bundleDateModified,
+    this.bundleDateCreated,
+    this.money,
+    this.referenceNumber,
+    this.isInvoiceOrder,
+    this.extraInt2,
+    this.extraInt3,
+    this.extraInt4,
+    this.extraInt5,
+    this.extraStr1,
+    this.extraStr2,
+    this.extraStr3,
+    this.extraStr4,
+    this.extraStr5,
+    this.extraText,
+    this.extraInfo,
+    this.channelId,
+    this.channelName,
+  });
 
-    factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         customerId: json["customer_id"],
         dateCreated: json["date_created"],
@@ -278,25 +277,40 @@ class Data {
         isDeleted: json["is_deleted"],
         ebayOrderId: json["ebay_order_id"],
         cartId: json["cart_id"],
-        billingAddress: json["billing_address"] == null ? null : BillingAddress.fromJson(json["billing_address"]),
+        billingAddress: json["billing_address"] == null
+            ? null
+            : BillingAddress.fromJson(json["billing_address"]),
         isEmailOptIn: json["is_email_opt_in"],
         creditCardType: json["credit_card_type"],
         orderSource: json["order_source"],
         dataChannelId: json["channel_id"],
         externalSource: json["external_source"],
-        consignments: json["consignments"] == null ? null : Consignments.fromJson(json["consignments"]),
-        products: json["products"] == null ? [] : List<Product>.from(json["products"]!.map((x) => Product.fromJson(x))),
-        shippingAddresses: json["shipping_addresses"] == null ? null : Consignments.fromJson(json["shipping_addresses"]),
-        coupons: json["coupons"] == null ? null : Consignments.fromJson(json["coupons"]),
+        consignments: json["consignments"] == null
+            ? null
+            : Consignments.fromJson(json["consignments"]),
+        products: json["products"] == null
+            ? []
+            : List<Product>.from(
+                json["products"]!.map((x) => Product.fromJson(x))),
+        shippingAddresses: json["shipping_addresses"] == null
+            ? null
+            : Consignments.fromJson(json["shipping_addresses"]),
+        coupons: json["coupons"] == null
+            ? null
+            : Consignments.fromJson(json["coupons"]),
         externalId: json["external_id"],
         externalMerchantId: json["external_merchant_id"],
         taxProviderId: json["tax_provider_id"],
         customerLocale: json["customer_locale"],
         externalOrderId: json["external_order_id"],
         storeDefaultCurrencyCode: json["store_default_currency_code"],
-        storeDefaultToTransactionalExchangeRate: json["store_default_to_transactional_exchange_rate"],
+        storeDefaultToTransactionalExchangeRate:
+            json["store_default_to_transactional_exchange_rate"],
         customStatus: json["custom_status"],
-        shippingAddress: json["shippingAddress"] == null ? [] : List<ShippingAddress>.from(json["shippingAddress"]!.map((x) => ShippingAddress.fromJson(x))),
+        shippingAddress: json["shippingAddress"] == null
+            ? []
+            : List<ShippingAddress>.from(json["shippingAddress"]!
+                .map((x) => ShippingAddress.fromJson(x))),
         shipments: json["shipments"],
         poNumber: json["poNumber"],
         bundleDateModified: json["bundle_date_modified"],
@@ -317,9 +331,9 @@ class Data {
         extraInfo: json["extraInfo"],
         channelId: json["channelId"],
         channelName: json["channelName"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "customer_id": customerId,
         "date_created": dateCreated,
@@ -381,7 +395,9 @@ class Data {
         "channel_id": dataChannelId,
         "external_source": externalSource,
         "consignments": consignments?.toJson(),
-        "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x.toJson())),
+        "products": products == null
+            ? []
+            : List<dynamic>.from(products!.map((x) => x.toJson())),
         "shipping_addresses": shippingAddresses?.toJson(),
         "coupons": coupons?.toJson(),
         "external_id": externalId,
@@ -390,9 +406,12 @@ class Data {
         "customer_locale": customerLocale,
         "external_order_id": externalOrderId,
         "store_default_currency_code": storeDefaultCurrencyCode,
-        "store_default_to_transactional_exchange_rate": storeDefaultToTransactionalExchangeRate,
+        "store_default_to_transactional_exchange_rate":
+            storeDefaultToTransactionalExchangeRate,
         "custom_status": customStatus,
-        "shippingAddress": shippingAddress == null ? [] : List<dynamic>.from(shippingAddress!.map((x) => x.toJson())),
+        "shippingAddress": shippingAddress == null
+            ? []
+            : List<dynamic>.from(shippingAddress!.map((x) => x.toJson())),
         "shipments": shipments,
         "poNumber": poNumber,
         "bundle_date_modified": bundleDateModified,
@@ -413,41 +432,41 @@ class Data {
         "extraInfo": extraInfo,
         "channelId": channelId,
         "channelName": channelName,
-    };
+      };
 }
 
 class BillingAddress {
-    String? firstName;
-    String? lastName;
-    String? company;
-    String? street1;
-    String? street2;
-    String? city;
-    String? state;
-    String? zip;
-    String? country;
-    String? countryIso2;
-    String? phone;
-    String? email;
-    List<dynamic>? formFields;
+  String? firstName;
+  String? lastName;
+  String? company;
+  String? street1;
+  String? street2;
+  String? city;
+  String? state;
+  String? zip;
+  String? country;
+  String? countryIso2;
+  String? phone;
+  String? email;
+  List<dynamic>? formFields;
 
-    BillingAddress({
-        this.firstName,
-        this.lastName,
-        this.company,
-        this.street1,
-        this.street2,
-        this.city,
-        this.state,
-        this.zip,
-        this.country,
-        this.countryIso2,
-        this.phone,
-        this.email,
-        this.formFields,
-    });
+  BillingAddress({
+    this.firstName,
+    this.lastName,
+    this.company,
+    this.street1,
+    this.street2,
+    this.city,
+    this.state,
+    this.zip,
+    this.country,
+    this.countryIso2,
+    this.phone,
+    this.email,
+    this.formFields,
+  });
 
-    factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
+  factory BillingAddress.fromJson(Map<String, dynamic> json) => BillingAddress(
         firstName: json["first_name"],
         lastName: json["last_name"],
         company: json["company"],
@@ -460,10 +479,12 @@ class BillingAddress {
         countryIso2: json["country_iso2"],
         phone: json["phone"],
         email: json["email"],
-        formFields: json["form_fields"] == null ? [] : List<dynamic>.from(json["form_fields"]!.map((x) => x)),
-    );
+        formFields: json["form_fields"] == null
+            ? []
+            : List<dynamic>.from(json["form_fields"]!.map((x) => x)),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "first_name": firstName,
         "last_name": lastName,
         "company": company,
@@ -476,184 +497,186 @@ class BillingAddress {
         "country_iso2": countryIso2,
         "phone": phone,
         "email": email,
-        "form_fields": formFields == null ? [] : List<dynamic>.from(formFields!.map((x) => x)),
-    };
+        "form_fields": formFields == null
+            ? []
+            : List<dynamic>.from(formFields!.map((x) => x)),
+      };
 }
 
 class Consignments {
-    String? url;
-    String? resource;
+  String? url;
+  String? resource;
 
-    Consignments({
-        this.url,
-        this.resource,
-    });
+  Consignments({
+    this.url,
+    this.resource,
+  });
 
-    factory Consignments.fromJson(Map<String, dynamic> json) => Consignments(
+  factory Consignments.fromJson(Map<String, dynamic> json) => Consignments(
         url: json["url"],
         resource: json["resource"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "url": url,
         "resource": resource,
-    };
+      };
 }
 
 class Money {
-    String? currencyLocation;
-    String? currencyToken;
-    String? decimalToken;
-    int? decimalPlaces;
-    String? thousandsToken;
+  String? currencyLocation;
+  String? currencyToken;
+  String? decimalToken;
+  int? decimalPlaces;
+  String? thousandsToken;
 
-    Money({
-        this.currencyLocation,
-        this.currencyToken,
-        this.decimalToken,
-        this.decimalPlaces,
-        this.thousandsToken,
-    });
+  Money({
+    this.currencyLocation,
+    this.currencyToken,
+    this.decimalToken,
+    this.decimalPlaces,
+    this.thousandsToken,
+  });
 
-    factory Money.fromJson(Map<String, dynamic> json) => Money(
+  factory Money.fromJson(Map<String, dynamic> json) => Money(
         currencyLocation: json["currency_location"],
         currencyToken: json["currency_token"],
         decimalToken: json["decimal_token"],
         decimalPlaces: json["decimal_places"],
         thousandsToken: json["thousands_token"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "currency_location": currencyLocation,
         "currency_token": currencyToken,
         "decimal_token": decimalToken,
         "decimal_places": decimalPlaces,
         "thousands_token": thousandsToken,
-    };
+      };
 }
 
 class Product {
-    int? id;
-    int? orderId;
-    int? productId;
-    int? variantId;
-    int? orderPickupMethodId;
-    int? orderAddressId;
-    String? name;
-    String? nameCustomer;
-    String? nameMerchant;
-    String? sku;
-    String? upc;
-    String? type;
-    String? basePrice;
-    String? priceExTax;
-    String? priceIncTax;
-    String? priceTax;
-    String? baseTotal;
-    String? totalExTax;
-    String? totalIncTax;
-    String? totalTax;
-    String? weight;
-    String? width;
-    String? height;
-    String? depth;
-    int? quantity;
-    String? baseCostPrice;
-    String? costPriceIncTax;
-    String? costPriceExTax;
-    String? costPriceTax;
-    bool? isRefunded;
-    int? quantityRefunded;
-    String? refundAmount;
-    int? returnId;
-    int? wrappingId;
-    String? wrappingName;
-    String? baseWrappingCost;
-    String? wrappingCostExTax;
-    String? wrappingCostIncTax;
-    String? wrappingCostTax;
-    String? wrappingMessage;
-    int? quantityShipped;
-    dynamic eventName;
-    dynamic eventDate;
-    String? fixedShippingCost;
-    String? ebayItemId;
-    String? ebayTransactionId;
-    int? optionSetId;
-    dynamic parentOrderProductId;
-    bool? isBundledProduct;
-    String? binPickingNumber;
-    String? externalId;
-    String? fulfillmentSource;
-    String? brand;
-    dynamic giftCertificateId;
-    List<dynamic>? appliedDiscounts;
-    List<ProductOption>? productOptions;
-    List<dynamic>? configurableFields;
-    String? discountedTotalIncTax;
+  int? id;
+  int? orderId;
+  int? productId;
+  int? variantId;
+  int? orderPickupMethodId;
+  int? orderAddressId;
+  String? name;
+  String? nameCustomer;
+  String? nameMerchant;
+  String? sku;
+  String? upc;
+  String? type;
+  String? basePrice;
+  String? priceExTax;
+  String? priceIncTax;
+  String? priceTax;
+  String? baseTotal;
+  String? totalExTax;
+  String? totalIncTax;
+  String? totalTax;
+  String? weight;
+  String? width;
+  String? height;
+  String? depth;
+  int? quantity;
+  String? baseCostPrice;
+  String? costPriceIncTax;
+  String? costPriceExTax;
+  String? costPriceTax;
+  bool? isRefunded;
+  int? quantityRefunded;
+  String? refundAmount;
+  int? returnId;
+  int? wrappingId;
+  String? wrappingName;
+  String? baseWrappingCost;
+  String? wrappingCostExTax;
+  String? wrappingCostIncTax;
+  String? wrappingCostTax;
+  String? wrappingMessage;
+  int? quantityShipped;
+  dynamic eventName;
+  dynamic eventDate;
+  String? fixedShippingCost;
+  String? ebayItemId;
+  String? ebayTransactionId;
+  int? optionSetId;
+  dynamic parentOrderProductId;
+  bool? isBundledProduct;
+  String? binPickingNumber;
+  String? externalId;
+  String? fulfillmentSource;
+  String? brand;
+  dynamic giftCertificateId;
+  List<dynamic>? appliedDiscounts;
+  List<ProductOption>? productOptions;
+  List<dynamic>? configurableFields;
+  String? discountedTotalIncTax;
 
-    Product({
-        this.id,
-        this.orderId,
-        this.productId,
-        this.variantId,
-        this.orderPickupMethodId,
-        this.orderAddressId,
-        this.name,
-        this.nameCustomer,
-        this.nameMerchant,
-        this.sku,
-        this.upc,
-        this.type,
-        this.basePrice,
-        this.priceExTax,
-        this.priceIncTax,
-        this.priceTax,
-        this.baseTotal,
-        this.totalExTax,
-        this.totalIncTax,
-        this.totalTax,
-        this.weight,
-        this.width,
-        this.height,
-        this.depth,
-        this.quantity,
-        this.baseCostPrice,
-        this.costPriceIncTax,
-        this.costPriceExTax,
-        this.costPriceTax,
-        this.isRefunded,
-        this.quantityRefunded,
-        this.refundAmount,
-        this.returnId,
-        this.wrappingId,
-        this.wrappingName,
-        this.baseWrappingCost,
-        this.wrappingCostExTax,
-        this.wrappingCostIncTax,
-        this.wrappingCostTax,
-        this.wrappingMessage,
-        this.quantityShipped,
-        this.eventName,
-        this.eventDate,
-        this.fixedShippingCost,
-        this.ebayItemId,
-        this.ebayTransactionId,
-        this.optionSetId,
-        this.parentOrderProductId,
-        this.isBundledProduct,
-        this.binPickingNumber,
-        this.externalId,
-        this.fulfillmentSource,
-        this.brand,
-        this.giftCertificateId,
-        this.appliedDiscounts,
-        this.productOptions,
-        this.configurableFields,
-        this.discountedTotalIncTax,
-    });
+  Product({
+    this.id,
+    this.orderId,
+    this.productId,
+    this.variantId,
+    this.orderPickupMethodId,
+    this.orderAddressId,
+    this.name,
+    this.nameCustomer,
+    this.nameMerchant,
+    this.sku,
+    this.upc,
+    this.type,
+    this.basePrice,
+    this.priceExTax,
+    this.priceIncTax,
+    this.priceTax,
+    this.baseTotal,
+    this.totalExTax,
+    this.totalIncTax,
+    this.totalTax,
+    this.weight,
+    this.width,
+    this.height,
+    this.depth,
+    this.quantity,
+    this.baseCostPrice,
+    this.costPriceIncTax,
+    this.costPriceExTax,
+    this.costPriceTax,
+    this.isRefunded,
+    this.quantityRefunded,
+    this.refundAmount,
+    this.returnId,
+    this.wrappingId,
+    this.wrappingName,
+    this.baseWrappingCost,
+    this.wrappingCostExTax,
+    this.wrappingCostIncTax,
+    this.wrappingCostTax,
+    this.wrappingMessage,
+    this.quantityShipped,
+    this.eventName,
+    this.eventDate,
+    this.fixedShippingCost,
+    this.ebayItemId,
+    this.ebayTransactionId,
+    this.optionSetId,
+    this.parentOrderProductId,
+    this.isBundledProduct,
+    this.binPickingNumber,
+    this.externalId,
+    this.fulfillmentSource,
+    this.brand,
+    this.giftCertificateId,
+    this.appliedDiscounts,
+    this.productOptions,
+    this.configurableFields,
+    this.discountedTotalIncTax,
+  });
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
         id: json["id"],
         orderId: json["order_id"],
         productId: json["product_id"],
@@ -708,13 +731,20 @@ class Product {
         fulfillmentSource: json["fulfillment_source"],
         brand: json["brand"],
         giftCertificateId: json["gift_certificate_id"],
-        appliedDiscounts: json["applied_discounts"] == null ? [] : List<dynamic>.from(json["applied_discounts"]!.map((x) => x)),
-        productOptions: json["product_options"] == null ? [] : List<ProductOption>.from(json["product_options"]!.map((x) => ProductOption.fromJson(x))),
-        configurableFields: json["configurable_fields"] == null ? [] : List<dynamic>.from(json["configurable_fields"]!.map((x) => x)),
+        appliedDiscounts: json["applied_discounts"] == null
+            ? []
+            : List<dynamic>.from(json["applied_discounts"]!.map((x) => x)),
+        productOptions: json["product_options"] == null
+            ? []
+            : List<ProductOption>.from(
+                json["product_options"]!.map((x) => ProductOption.fromJson(x))),
+        configurableFields: json["configurable_fields"] == null
+            ? []
+            : List<dynamic>.from(json["configurable_fields"]!.map((x) => x)),
         discountedTotalIncTax: json["discounted_total_inc_tax"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "order_id": orderId,
         "product_id": productId,
@@ -769,47 +799,53 @@ class Product {
         "fulfillment_source": fulfillmentSource,
         "brand": brand,
         "gift_certificate_id": giftCertificateId,
-        "applied_discounts": appliedDiscounts == null ? [] : List<dynamic>.from(appliedDiscounts!.map((x) => x)),
-        "product_options": productOptions == null ? [] : List<dynamic>.from(productOptions!.map((x) => x.toJson())),
-        "configurable_fields": configurableFields == null ? [] : List<dynamic>.from(configurableFields!.map((x) => x)),
+        "applied_discounts": appliedDiscounts == null
+            ? []
+            : List<dynamic>.from(appliedDiscounts!.map((x) => x)),
+        "product_options": productOptions == null
+            ? []
+            : List<dynamic>.from(productOptions!.map((x) => x.toJson())),
+        "configurable_fields": configurableFields == null
+            ? []
+            : List<dynamic>.from(configurableFields!.map((x) => x)),
         "discounted_total_inc_tax": discountedTotalIncTax,
-    };
+      };
 }
 
 class ProductOption {
-    int? id;
-    int? optionId;
-    int? orderProductId;
-    int? productOptionId;
-    String? displayName;
-    String? displayNameCustomer;
-    String? displayNameMerchant;
-    String? displayValue;
-    String? displayValueCustomer;
-    String? displayValueMerchant;
-    String? value;
-    String? type;
-    String? name;
-    String? displayStyle;
+  int? id;
+  int? optionId;
+  int? orderProductId;
+  int? productOptionId;
+  String? displayName;
+  String? displayNameCustomer;
+  String? displayNameMerchant;
+  String? displayValue;
+  String? displayValueCustomer;
+  String? displayValueMerchant;
+  String? value;
+  String? type;
+  String? name;
+  String? displayStyle;
 
-    ProductOption({
-        this.id,
-        this.optionId,
-        this.orderProductId,
-        this.productOptionId,
-        this.displayName,
-        this.displayNameCustomer,
-        this.displayNameMerchant,
-        this.displayValue,
-        this.displayValueCustomer,
-        this.displayValueMerchant,
-        this.value,
-        this.type,
-        this.name,
-        this.displayStyle,
-    });
+  ProductOption({
+    this.id,
+    this.optionId,
+    this.orderProductId,
+    this.productOptionId,
+    this.displayName,
+    this.displayNameCustomer,
+    this.displayNameMerchant,
+    this.displayValue,
+    this.displayValueCustomer,
+    this.displayValueMerchant,
+    this.value,
+    this.type,
+    this.name,
+    this.displayStyle,
+  });
 
-    factory ProductOption.fromJson(Map<String, dynamic> json) => ProductOption(
+  factory ProductOption.fromJson(Map<String, dynamic> json) => ProductOption(
         id: json["id"],
         optionId: json["option_id"],
         orderProductId: json["order_product_id"],
@@ -824,9 +860,9 @@ class ProductOption {
         type: json["type"],
         name: json["name"],
         displayStyle: json["display_style"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "option_id": optionId,
         "order_product_id": orderProductId,
@@ -841,77 +877,78 @@ class ProductOption {
         "type": type,
         "name": name,
         "display_style": displayStyle,
-    };
+      };
 }
 
 class ShippingAddress {
-    int? id;
-    int? orderId;
-    String? firstName;
-    String? lastName;
-    String? company;
-    String? street1;
-    String? street2;
-    String? city;
-    String? zip;
-    String? country;
-    String? countryIso2;
-    String? state;
-    String? email;
-    String? phone;
-    int? itemsTotal;
-    int? itemsShipped;
-    String? shippingMethod;
-    String? baseCost;
-    String? costExTax;
-    String? costIncTax;
-    String? costTax;
-    int? costTaxClassId;
-    String? baseHandlingCost;
-    String? handlingCostExTax;
-    String? handlingCostIncTax;
-    String? handlingCostTax;
-    int? handlingCostTaxClassId;
-    int? shippingZoneId;
-    String? shippingZoneName;
-    Consignments? shippingQuotes;
-    List<dynamic>? formFields;
+  int? id;
+  int? orderId;
+  String? firstName;
+  String? lastName;
+  String? company;
+  String? street1;
+  String? street2;
+  String? city;
+  String? zip;
+  String? country;
+  String? countryIso2;
+  String? state;
+  String? email;
+  String? phone;
+  int? itemsTotal;
+  int? itemsShipped;
+  String? shippingMethod;
+  String? baseCost;
+  String? costExTax;
+  String? costIncTax;
+  String? costTax;
+  int? costTaxClassId;
+  String? baseHandlingCost;
+  String? handlingCostExTax;
+  String? handlingCostIncTax;
+  String? handlingCostTax;
+  int? handlingCostTaxClassId;
+  int? shippingZoneId;
+  String? shippingZoneName;
+  Consignments? shippingQuotes;
+  List<dynamic>? formFields;
 
-    ShippingAddress({
-        this.id,
-        this.orderId,
-        this.firstName,
-        this.lastName,
-        this.company,
-        this.street1,
-        this.street2,
-        this.city,
-        this.zip,
-        this.country,
-        this.countryIso2,
-        this.state,
-        this.email,
-        this.phone,
-        this.itemsTotal,
-        this.itemsShipped,
-        this.shippingMethod,
-        this.baseCost,
-        this.costExTax,
-        this.costIncTax,
-        this.costTax,
-        this.costTaxClassId,
-        this.baseHandlingCost,
-        this.handlingCostExTax,
-        this.handlingCostIncTax,
-        this.handlingCostTax,
-        this.handlingCostTaxClassId,
-        this.shippingZoneId,
-        this.shippingZoneName,
-        this.shippingQuotes,
-        this.formFields,
-    });
+  ShippingAddress({
+    this.id,
+    this.orderId,
+    this.firstName,
+    this.lastName,
+    this.company,
+    this.street1,
+    this.street2,
+    this.city,
+    this.zip,
+    this.country,
+    this.countryIso2,
+    this.state,
+    this.email,
+    this.phone,
+    this.itemsTotal,
+    this.itemsShipped,
+    this.shippingMethod,
+    this.baseCost,
+    this.costExTax,
+    this.costIncTax,
+    this.costTax,
+    this.costTaxClassId,
+    this.baseHandlingCost,
+    this.handlingCostExTax,
+    this.handlingCostIncTax,
+    this.handlingCostTax,
+    this.handlingCostTaxClassId,
+    this.shippingZoneId,
+    this.shippingZoneName,
+    this.shippingQuotes,
+    this.formFields,
+  });
 
-    factory ShippingAddress.fromJson(Map<String, dynamic> json) => ShippingAddress(
+  factory ShippingAddress.fromJson(Map<String, dynamic> json) =>
+      ShippingAddress(
         id: json["id"],
         orderId: json["order_id"],
         firstName: json["first_name"],
@@ -941,11 +978,15 @@ class ShippingAddress {
         handlingCostTaxClassId: json["handling_cost_tax_class_id"],
         shippingZoneId: json["shipping_zone_id"],
         shippingZoneName: json["shipping_zone_name"],
-        shippingQuotes: json["shipping_quotes"] == null ? null : Consignments.fromJson(json["shipping_quotes"]),
-        formFields: json["form_fields"] == null ? [] : List<dynamic>.from(json["form_fields"]!.map((x) => x)),
-    );
+        shippingQuotes: json["shipping_quotes"] == null
+            ? null
+            : Consignments.fromJson(json["shipping_quotes"]),
+        formFields: json["form_fields"] == null
+            ? []
+            : List<dynamic>.from(json["form_fields"]!.map((x) => x)),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "order_id": orderId,
         "first_name": firstName,
@@ -976,6 +1017,8 @@ class ShippingAddress {
         "shipping_zone_id": shippingZoneId,
         "shipping_zone_name": shippingZoneName,
         "shipping_quotes": shippingQuotes?.toJson(),
-        "form_fields": formFields == null ? [] : List<dynamic>.from(formFields!.map((x) => x)),
-    };
+        "form_fields": formFields == null
+            ? []
+            : List<dynamic>.from(formFields!.map((x) => x)),
+      };
 }

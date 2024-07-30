@@ -17,7 +17,8 @@ import 'package:sizer/sizer.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   var orderId;
-  OrderDetailScreen({super.key, required this.orderId});
+  var id;
+  OrderDetailScreen({super.key, required this.orderId, required this.id});
 
   @override
   State<OrderDetailScreen> createState() => _OrderDetailScreenState();
@@ -45,6 +46,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   Widget build(BuildContext context) {
     // stepperStatus.indexOf(widget.snapshot.status);
     ProgressLoader pl = ProgressLoader(context, isDismissible: false);
+    debugPrint("== order id ===>${widget.orderId}");
 
     return Scaffold(
       // appBar: AppBar(
@@ -488,27 +490,41 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                                   ],
                                                 ),
                                               ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            1.h),
-                                                    color: SpUtil.getBool(
-                                                            SpConstUtil
-                                                                .appTheme)!
-                                                        ? colors.whitecolor
-                                                        : colors
-                                                            .themebluecolor),
-                                                child: Padding(
-                                                  padding:
-                                                      EdgeInsets.all(1.0.h),
-                                                  child: text("Print Invoice",
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  await pl.show();
+                                                  // await apis
+                                                  //     .generateinvoiceNumberApi(
+                                                  //         pl, widget.id);
+                                                  await apis
+                                                      .getAllinvoiceNumberApi(
+                                                          pl,
+                                                          widget.id,
+                                                          widget.orderId);
+                                                  await pl.hide();
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              1.h),
                                                       color: SpUtil.getBool(
                                                               SpConstUtil
                                                                   .appTheme)!
-                                                          ? colors.blackcolor
-                                                          : colors.whitecolor,
-                                                      fontSize: 10.sp),
+                                                          ? colors.whitecolor
+                                                          : colors
+                                                              .themebluecolor),
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.all(1.0.h),
+                                                    child: text("Print Invoice",
+                                                        color: SpUtil.getBool(
+                                                                SpConstUtil
+                                                                    .appTheme)!
+                                                            ? colors.blackcolor
+                                                            : colors.whitecolor,
+                                                        fontSize: 10.sp),
+                                                  ),
                                                 ),
                                               )
                                             ],
@@ -776,14 +792,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   getAllOrderDetailBloc.getAllrderDeatilsBloc(
                       pl, widget.orderId);
                   return const Expanded(
-                      child:
-                          //      Center(
-                          //         child: CupertinoActivityIndicator(
-                          //   radius: 1.4.h,
-                          // )
-
-                          // )
-                          Center(child: OrderDetailShimmer()));
+                      child: Center(child: OrderDetailShimmer()));
                 }
               }),
         ],

@@ -36,15 +36,7 @@ class _CategoryShimmerrState extends State<CategoryShimmerr> {
 
   @override
   Widget build(BuildContext context) {
-    return
-        // ListView.builder(
-        //   scrollDirection: Axis.horizontal,
-        //   physics: const NeverScrollableScrollPhysics(),
-        //   shrinkWrap: true,
-        //   itemCount: 3,
-        //   itemBuilder: (context, index) {
-        // return
-        SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         children: [
           for (int index = 0; index < 15; index++)
@@ -65,8 +57,6 @@ class _CategoryShimmerrState extends State<CategoryShimmerr> {
               ),
             ),
         ],
-        // );
-        // },
       ),
     );
   }

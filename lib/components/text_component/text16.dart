@@ -7,7 +7,7 @@ Widget text16(String text, Color color, FontWeight fontWeight,
     style: TextStyle(
       color: color,
       fontSize: 16,
-      fontFamily: "Roboto",
+      fontFamily: "OpenSans",
       fontWeight: fontWeight,
     ),
     maxLines: maxLine,
