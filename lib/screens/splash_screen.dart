@@ -9,8 +9,7 @@ import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
-  const SplashScreen(
-      {super.key,required this.toggleTheme});
+  const SplashScreen({super.key, required this.toggleTheme});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -19,7 +18,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 4), () async {
       SpUtil.getInt(SpConstUtil.customerID) == null ||
               SpUtil.getInt(SpConstUtil.customerID) == 0
           ? await Navigator.of(context).pushReplacement(
@@ -45,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset("assets/png/adyah_logo.png"),
+        child: Image.asset("assets/png/animation-3 sec.gif"),
       ),
     );
   }
